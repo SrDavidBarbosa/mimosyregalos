@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mimos y Regalos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Mimos y Regalos</div>
+
+    <nav>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#admin">Panel interno</a>
+    </nav>
+
+    <div class="idiomas">
+        <button class="lang-btn" data-lang="es">🇪🇸 Castellano</button>
+        <button class="lang-btn" data-lang="va">🏳️ Valencià</button>
+    </div>
+</header>
+
+<main>
+
+<section id="catalogo">
+    <h1 data-es="Cestas de regalo" data-va="Cistelles de regal"></h1>
+    <p class="subtitle" data-es="Detalles dulces y románticos." data-va="Detalls dolços i romàntics."></p>
+
+    <div id="cards" class="grid"></div>
+</section>
+
+<section id="admin">
+    <h2 data-es="Panel interno" data-va="Panell intern"></h2>
+
+    <div id="login-box">
+        <label data-es="Selecciona país" data-va="Selecciona país"></label>
+        <select id="country">
+            <option value="+34">🇪🇸 España (+34)</option>
+        </select>
+
+        <label data-es="Número de teléfono" data-va="Número de telèfon"></label>
+        <input type="text" id="phone" placeholder="640645343">
+
+        <button id="login-btn" data-es="Entrar" data-va="Entrar"></button>
+        <p id="login-msg"></p>
+    </div>
+
+    <div id="editor" style="display:none;">
+        <h3 data-es="Editar cestas" data-va="Editar cistelles"></h3>
+
+        <label data-es="Seleccionar cesta" data-va="Seleccionar cistella"></label>
+        <select id="select-cesta"></select>
+
+        <label data-es="Nombre" data-va="Nom"></label>
+        <input type="text" id="cesta-nombre">
+
+        <label data-es="Precio" data-va="Preu"></label>
+        <input type="text" id="cesta-precio">
+
+        <label data-es="Ítems (uno por línea)" data-va="Ítems (un per línia)"></label>
+        <textarea id="cesta-items"></textarea>
+
+        <button id="save-btn" data-es="Guardar" data-va="Guardar"></button>
+        <button id="new-btn" data-es="Nueva cesta" data-va="Nova cistella"></button>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    © Mimos y Regalos
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
