@@ -4,6 +4,9 @@ const allowedPhones = ["640645343", "627945426", "610712400", "640645370"];
 // Idioma atual
 let currentLang = localStorage.getItem("mimosyregalos_lang") || "es";
 
+// Modo de visualização: all | madre
+let currentView = "all";
+
 // Cestas com textos em ES/VA
 let cestas = [
     {
@@ -329,70 +332,76 @@ if (saved) {
 // Traduções de interface
 const uiTexts = {
     es: {
-        nav_catalogo: "Catálogo",
-        nav_madre: "Día de la Madre",
-        btn_login: "Login",
         hero_subtitle: "Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticos y gourmet.",
         hero_cta: "Ver cestas disponibles",
         sec_catalogo_title: "Cestas de regalo",
         sec_catalogo_subtitle: "Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.",
-        sec_madre_title: "Cesta Especial Día de la Madre",
-        sec_madre_subtitle: "Edición especial con productos típicos valencianos y una presentación elegante para celebrar a lo grande.",
-        sec_admin_title: "Panel interno",
-        sec_admin_subtitle: "Acceso exclusivo para gestionar el catálogo de cestas.",
-        login_country_label: "Selecciona país",
+        madre_headline: "Una sorpresa inolvidable para el Día de la Madre",
+        madre_text_1: "Presentación cuidada, productos seleccionados con cariño y un toque muy valenciano para decir “gracias” de una forma especial.",
+        madre_text_2: "Ideal para entregar en casa, en el trabajo o como sorpresa en la mañana. Todo listo para emocionar desde el primer vistazo.",
+        madre_bullet_1: "Edición limitada para la fecha",
+        madre_bullet_2: "Productos típicos valencianos",
+        madre_bullet_3: "Presentación fotogénica para redes sociales",
+        madre_bullet_4: "Mensaje personalizado para la mamá",
+        cart_title: "Tu selección",
+        cart_whatsapp: "Enviar pedido por WhatsApp",
+        login_title: "Acceso interno",
+        login_desc: "Introduce tu número autorizado para gestionar el catálogo.",
+        login_country_label: "País",
         login_phone_label: "Número de teléfono",
         btn_login_enter: "Entrar",
-        editor_title: "Editar cestas",
         btn_logout: "Cerrar sesión",
+        editor_title: "Editar cestas",
         editor_select_label: "Seleccionar cesta",
         editor_name_es: "Nombre (Castellano)",
         editor_name_va: "Nom (Valencià)",
         editor_price_es: "Precio (Castellano)",
         editor_price_va: "Preu (Valencià)",
         editor_image: "URL de la imagen",
+        editor_image_upload: "Subir imagen (galería / cámara / escritorio)",
         editor_items_es: "Ítems (Castellano, uno por línea)",
         editor_items_va: "Ítems (Valencià, un per línia)",
         btn_save: "Guardar",
         btn_new: "Nueva cesta",
         editor_note: "Los cambios se guardan en este navegador (localStorage). Para actualizar el código en GitHub, copia el JSON si lo necesitas.",
-        cart_title: "Tu selección",
-        cart_whatsapp: "Enviar pedido por WhatsApp",
         login_unauthorized: "Número no autorizado.",
         cart_empty: "No hay productos en el carrito.",
         card_whatsapp: "WhatsApp directo",
         card_cart: "Añadir al carrito"
     },
     va: {
-        nav_catalogo: "Catàleg",
-        nav_madre: "Dia de la Mare",
-        btn_login: "Login",
         hero_subtitle: "Cistelles de regal premium a València, pensades per a sorprendre amb detalls dolços, romàntics i gourmet.",
         hero_cta: "Veure cistelles disponibles",
         sec_catalogo_title: "Cistelles de regal",
         sec_catalogo_subtitle: "Tria la cistella ideal per a aniversaris, sorpreses romàntiques o un detall dolç inesperat.",
-        sec_madre_title: "Cistella Especial Dia de la Mare",
-        sec_madre_subtitle: "Edició especial amb productes típics valencians i una presentació elegant per a celebrar a lo gran.",
-        sec_admin_title: "Panell intern",
-        sec_admin_subtitle: "Accés exclusiu per a gestionar el catàleg de cistelles.",
-        login_country_label: "Selecciona país",
+        madre_headline: "Una sorpresa inoblidable per al Dia de la Mare",
+        madre_text_1: "Presentació cuidada, productes seleccionats amb afecte i un toc molt valencià per a dir “gràcies” d'una forma especial.",
+        madre_text_2: "Ideal per a entregar a casa, a la faena o com a sorpresa al matí. Tot llest per a emocionar des de la primera ullada.",
+        madre_bullet_1: "Edició limitada per a la data",
+        madre_bullet_2: "Productes típics valencians",
+        madre_bullet_3: "Presentació fotogènica per a xarxes socials",
+        madre_bullet_4: "Missatge personalitzat per a la mare",
+        cart_title: "La teua selecció",
+        cart_whatsapp: "Enviar comanda per WhatsApp",
+        login_title: "Accés intern",
+        login_desc: "Introdueix el teu número autoritzat per a gestionar el catàleg.",
+        login_country_label: "País",
         login_phone_label: "Número de telèfon",
         btn_login_enter: "Entrar",
-        editor_title: "Editar cistelles",
         btn_logout: "Tancar sessió",
+        editor_title: "Editar cistelles",
         editor_select_label: "Seleccionar cistella",
         editor_name_es: "Nom (Castellà)",
         editor_name_va: "Nom (Valencià)",
         editor_price_es: "Preu (Castellà)",
         editor_price_va: "Preu (Valencià)",
         editor_image: "URL de la imatge",
+        editor_image_upload: "Pujar imatge (galeria / càmera / escriptori)",
         editor_items_es: "Ítems (Castellà, un per línia)",
         editor_items_va: "Ítems (Valencià, un per línia)",
         btn_save: "Guardar",
         btn_new: "Nova cistella",
         editor_note: "Els canvis es guarden en aquest navegador (localStorage). Per a actualitzar el codi en GitHub, copia el JSON si ho necessites.",
-        cart_title: "La teua selecció",
-        cart_whatsapp: "Enviar comanda per WhatsApp",
         login_unauthorized: "Número no autoritzat.",
         cart_empty: "No hi ha productes al carret.",
         card_whatsapp: "WhatsApp directe",
@@ -406,16 +415,32 @@ let cart = [];
 // Render catálogo
 function renderCatalog() {
     const container = document.getElementById("cards");
-    const madreContainer = document.getElementById("cards-madre");
+    const madreExtra = document.getElementById("madre-extra");
     container.innerHTML = "";
-    madreContainer.innerHTML = "";
 
-    cestas.forEach((c, index) => {
+    const lang = currentLang;
+    const dict = uiTexts[lang];
+
+    // Título / subtítulo
+    document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (dict[key]) el.textContent = dict[key];
+    });
+
+    let list = cestas;
+    if (currentView === "madre") {
+        list = cestas.filter(c => c.id === "madre-valenciana");
+        madreExtra.style.display = "block";
+    } else {
+        list = cestas.filter(c => c.categoria === "general");
+        madreExtra.style.display = "none";
+    }
+
+    list.forEach((c, index) => {
         const card = document.createElement("div");
         card.className = "card";
         card.style.animationDelay = `${index * 0.05}s`;
 
-        const lang = currentLang;
         const nome = c.nombre[lang] || c.nombre.es;
         const preco = c.precio[lang] || c.precio.es;
         const itens = c.items[lang] || c.items.es;
@@ -431,19 +456,15 @@ function renderCatalog() {
             </ul>
             <div class="card-actions">
                 <button class="primary-btn btn-whatsapp" onclick="pedirWhatsApp('${encodeURIComponent(nome)}')">
-                    ${uiTexts[lang].card_whatsapp}
+                    ${dict.card_whatsapp}
                 </button>
                 <button class="secondary-btn btn-cart" onclick="addToCart('${c.id}')">
-                    ${uiTexts[lang].card_cart}
+                    ${dict.card_cart}
                 </button>
             </div>
         `;
 
-        if (c.categoria === "madre") {
-            madreContainer.appendChild(card);
-        } else {
-            container.appendChild(card);
-        }
+        container.appendChild(card);
     });
 }
 
@@ -453,6 +474,7 @@ function pedirWhatsApp(nombreEncoded) {
     const msg = `Hola, me gustaría pedir la cesta “${nombre}”. ¿Está disponible para entrega hoy?`;
     window.open(`https://wa.me/34640645343?text=${encodeURIComponent(msg)}`, "_blank");
 }
+window.pedirWhatsApp = pedirWhatsApp;
 
 // Carrinho
 function addToCart(id) {
@@ -461,6 +483,7 @@ function addToCart(id) {
     cart.push(cesta);
     updateCartCount();
 }
+window.addToCart = addToCart;
 
 function updateCartCount() {
     document.getElementById("cart-count").textContent = cart.length;
@@ -488,9 +511,11 @@ cartModal.addEventListener("click", (e) => {
 function renderCartModal() {
     cartList.innerHTML = "";
     const lang = currentLang;
+    const dict = uiTexts[lang];
+
     if (cart.length === 0) {
         const li = document.createElement("li");
-        li.textContent = uiTexts[lang].cart_empty;
+        li.textContent = dict.cart_empty;
         cartList.appendChild(li);
         return;
     }
@@ -506,6 +531,7 @@ function renderCartModal() {
 cartWhatsApp.onclick = () => {
     if (cart.length === 0) return;
     const lang = currentLang;
+    const dict = uiTexts[lang];
     const lines = cart.map((c, i) => {
         const nome = c.nombre[lang] || c.nombre.es;
         const preco = c.precio[lang] || c.precio.es;
@@ -521,13 +547,38 @@ function scrollToCatalog() {
 }
 window.scrollToCatalog = scrollToCatalog;
 
-// Login: botão no header abre/fecha box
+// Navegação Catálogo / Día de la Madre
+const navAll = document.getElementById("nav-all");
+const navMadre = document.getElementById("nav-madre");
+
+function setView(view) {
+    currentView = view;
+    navAll.classList.toggle("active", view === "all");
+    navMadre.classList.toggle("active", view === "madre");
+    renderCatalog();
+    document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
+}
+
+navAll.addEventListener("click", () => setView("all"));
+navMadre.addEventListener("click", () => setView("madre"));
+
+// Login popup
 const loginOpenBtn = document.getElementById("login-open");
-const loginBox = document.getElementById("login-box");
-const editorBox = document.getElementById("editor");
+const loginModal = document.getElementById("login-modal");
+const loginCloseBtn = document.getElementById("login-close");
+const loginBox = document.getElementById("login-step");
+const editorBox = document.getElementById("editor-step");
 
 loginOpenBtn.onclick = () => {
-    document.getElementById("admin").scrollIntoView({ behavior: "smooth" });
+    loginModal.style.display = "flex";
+};
+
+loginCloseBtn.onclick = () => {
+    loginModal.style.display = "none";
+};
+
+document.getElementById("logout-btn").onclick = () => {
+    editorBox.style.display = "none";
     loginBox.style.display = "block";
 };
 
@@ -535,7 +586,7 @@ loginOpenBtn.onclick = () => {
 document.getElementById("login-btn").onclick = () => {
     const phone = document.getElementById("phone").value.trim();
     const msg = document.getElementById("login-msg");
-    const lang = currentLang;
+    const dict = uiTexts[currentLang];
 
     if (allowedPhones.includes(phone)) {
         msg.textContent = "";
@@ -543,13 +594,8 @@ document.getElementById("login-btn").onclick = () => {
         editorBox.style.display = "block";
         initEditor();
     } else {
-        msg.textContent = uiTexts[lang].login_unauthorized;
+        msg.textContent = dict.login_unauthorized;
     }
-};
-
-document.getElementById("logout-btn").onclick = () => {
-    editorBox.style.display = "none";
-    loginBox.style.display = "block";
 };
 
 // Editor
@@ -559,6 +605,7 @@ const nombreVaInput = document.getElementById("cesta-nombre-va");
 const precioEsInput = document.getElementById("cesta-precio-es");
 const precioVaInput = document.getElementById("cesta-precio-va");
 const imagemInput = document.getElementById("cesta-imagem");
+const fileInput = document.getElementById("cesta-file");
 const itemsEsTextarea = document.getElementById("cesta-items-es");
 const itemsVaTextarea = document.getElementById("cesta-items-va");
 const saveBtn = document.getElementById("save-btn");
@@ -598,7 +645,26 @@ function loadCesta(id) {
     imagemInput.value = c.imagem || "";
     itemsEsTextarea.value = (c.items.es || []).join("\n");
     itemsVaTextarea.value = (c.items.va || []).join("\n");
+    fileInput.value = "";
 }
+
+// upload de imagem (galeria / câmera / desktop)
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        // salva como dataURL na cesta atual
+        if (!currentId) return;
+        const idx = cestas.findIndex(x => x.id === currentId);
+        if (idx === -1) return;
+        cestas[idx].imagem = e.target.result;
+        imagemInput.value = "(imagem carregada da galeria)";
+        localStorage.setItem("mimosyregalos_cestas", JSON.stringify(cestas));
+        renderCatalog();
+    };
+    reader.readAsDataURL(file);
+});
 
 function saveCesta() {
     if (!currentId) return;
@@ -609,7 +675,12 @@ function saveCesta() {
     cestas[idx].nombre.va = nombreVaInput.value.trim() || cestas[idx].nombre.va;
     cestas[idx].precio.es = precioEsInput.value.trim() || cestas[idx].precio.es;
     cestas[idx].precio.va = precioVaInput.value.trim() || cestas[idx].precio.va;
-    cestas[idx].imagem = imagemInput.value.trim() || cestas[idx].imagem;
+
+    const url = imagemInput.value.trim();
+    if (url && !url.startsWith("(imagem carregada")) {
+        cestas[idx].imagem = url;
+    }
+
     cestas[idx].items.es = itemsEsTextarea.value
         .split("\n")
         .map(x => x.trim())
@@ -659,14 +730,6 @@ const langButtons = document.querySelectorAll(".lang-btn");
 function applyLanguage(lang) {
     currentLang = lang;
     localStorage.setItem("mimosyregalos_lang", lang);
-
-    const dict = uiTexts[lang];
-
-    document.querySelectorAll("[data-key]").forEach(el => {
-        const key = el.getAttribute("data-key");
-        if (dict[key]) el.textContent = dict[key];
-    });
-
     renderCatalog();
 }
 
@@ -689,6 +752,5 @@ darkToggle.onclick = () => {
 };
 
 // Inicialização
-applyLanguage(currentLang);
-renderCatalog();
+setView("all");
 updateCartCount();
