@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mimos y Regalos – Cestas Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO -->
+    <meta name="description" content="Cestas de regalo premium en Valencia. Dulces, románticas y gourmet. Pedidos por WhatsApp.">
+
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Mimos y Regalos – Cestas Premium">
+    <meta property="og:description" content="Cestas dulces, románticas y gourmet. Pedidos por WhatsApp.">
+    <meta property="og:image" content="https://srdavidbarbosa.github.io/mimosyregalos/img/og-image.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://srdavidbarbosa.github.io/mimosyregalos/">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">Mimos y Regalos</div>
+
+    <nav>
+        <a href="#catalogo" data-es="Catálogo" data-va="Catàleg">Catálogo</a>
+        <a href="#admin" data-es="Panel interno" data-va="Panell intern">Panel interno</a>
+    </nav>
+
+    <div class="header-right">
+        <div class="idiomas">
+            <button class="lang-btn" data-lang="es">🇪🇸 Castellano</button>
+            <button class="lang-btn" data-lang="va">🏳️ Valencià</button>
+        </div>
+        <button id="dark-toggle" class="dark-btn" title="Modo oscuro">🌙</button>
+    </div>
+</header>
+
+<main>
+
+<section id="catalogo">
+    <h1 data-es="Cestas de regalo" data-va="Cistelles de regal">Cestas de regalo</h1>
+    <p class="subtitle"
+       data-es="Detalles dulces, románticos y gourmet con un toque premium."
+       data-va="Detalls dolços, romàntics i gourmet amb un toc premium.">
+       Detalles dulces, románticos y gourmet con un toque premium.
+    </p>
+
+    <div id="cards" class="grid"></div>
+</section>
+
+<section id="admin">
+    <h2 data-es="Panel interno" data-va="Panell intern">Panel interno</h2>
+
+    <div id="login-box" class="panel">
+        <label for="country" data-es="Selecciona país" data-va="Selecciona país">Selecciona país</label>
+        <select id="country">
+            <option value="+34">🇪🇸 España (+34)</option>
+        </select>
+
+        <label for="phone" data-es="Número de teléfono" data-va="Número de telèfon">Número de teléfono</label>
+        <input type="text" id="phone" placeholder="640645343">
+
+        <button id="login-btn" data-es="Entrar" data-va="Entrar">Entrar</button>
+        <p id="login-msg" class="small"></p>
+    </div>
+
+    <div id="editor" class="panel" style="display:none;">
+        <div class="editor-header">
+            <h3 data-es="Editar cestas" data-va="Editar cistelles">Editar cestas</h3>
+            <button id="logout-btn" class="secondary" data-es="Cerrar sesión" data-va="Tancar sessió">Cerrar sesión</button>
+        </div>
+
+        <label for="select-cesta" data-es="Seleccionar cesta" data-va="Seleccionar cistella">Seleccionar cesta</label>
+        <select id="select-cesta"></select>
+
+        <label for="cesta-nombre" data-es="Nombre" data-va="Nom">Nombre</label>
+        <input type="text" id="cesta-nombre">
+
+        <label for="cesta-precio" data-es="Precio" data-va="Preu">Precio</label>
+        <input type="text" id="cesta-precio">
+
+        <label for="cesta-imagem" data-es="URL de la imagen" data-va="URL de la imatge">URL de la imagen</label>
+        <input type="text" id="cesta-imagem" placeholder="img/cesta1.jpg">
+
+        <label for="cesta-items" data-es="Ítems (uno por línea)" data-va="Ítems (un per línia)">Ítems (uno por línea)</label>
+        <textarea id="cesta-items"></textarea>
+
+        <div class="editor-actions">
+            <button id="save-btn" data-es="Guardar" data-va="Guardar">Guardar</button>
+            <button id="new-btn" class="secondary" data-es="Nueva cesta" data-va="Nova cistella">Nueva cesta</button>
+        </div>
+
+        <p class="small" data-es="Los cambios se guardan en este navegador (localStorage)."
+           data-va="Els canvis es guarden en aquest navegador (localStorage).">
+           Los cambios se guardan en este navegador (localStorage).
+        </p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    © 2026 Mimos y Regalos
+</footer>
+
+<!-- Carrinho flutuante -->
+<button id="cart-button" class="cart-button">
+    🧺 <span id="cart-count">0</span>
+</button>
+
+<div id="cart-modal" class="cart-modal">
+    <div class="cart-content">
+        <div class="cart-header">
+            <h3 data-es="Tu selección" data-va="La teua selecció">Tu selección</h3>
+            <button id="cart-close">✕</button>
+        </div>
+        <ul id="cart-list"></ul>
+        <button id="cart-whatsapp" class="cart-whatsapp"
+                data-es="Enviar pedido por WhatsApp"
+                data-va="Enviar comanda per WhatsApp">
+            Enviar pedido por WhatsApp
+        </button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
