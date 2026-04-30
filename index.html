@@ -11,20 +11,23 @@
     <!-- OpenGraph -->
     <meta property="og:title" content="Mimos y Regalos – Cestas Premium">
     <meta property="og:description" content="Cestas dulces, románticas y gourmet. Pedidos por WhatsApp.">
-    <meta property="og:image" content="https://srdavidbarbosa.github.io/mimosyregalos/img/og-image.jpg">
+    <meta property="og:image" content="https://SEU_USUARIO.github.io/mimosyregalos/img/og-image.jpg">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://srdavidbarbosa.github.io/mimosyregalos/">
+    <meta property="og:url" content="https://SEU_USUARIO.github.io/mimosyregalos/">
 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-    <div class="logo">Mimos y Regalos</div>
+    <div class="header-left">
+        <img src="img/logo-mimos.png" alt="Mimos y Regalos" class="logo-img">
+        <div class="logo-text">Mimos y Regalos</div>
+    </div>
 
     <nav>
-        <a href="#catalogo" data-es="Catálogo" data-va="Catàleg">Catálogo</a>
-        <a href="#admin" data-es="Panel interno" data-va="Panell intern">Panel interno</a>
+        <a href="#catalogo" data-key="nav_catalogo">Catálogo</a>
+        <a href="#madre" data-key="nav_madre">Día de la Madre</a>
     </nav>
 
     <div class="header-right">
@@ -32,68 +35,122 @@
             <button class="lang-btn" data-lang="es">🇪🇸 Castellano</button>
             <button class="lang-btn" data-lang="va">🏳️ Valencià</button>
         </div>
-        <button id="dark-toggle" class="dark-btn" title="Modo oscuro">🌙</button>
+        <button id="dark-toggle" class="icon-btn" title="Modo oscuro">🌙</button>
+        <button id="login-open" class="pill-btn" data-key="btn_login">Login</button>
     </div>
 </header>
 
 <main>
 
-<section id="catalogo">
-    <h1 data-es="Cestas de regalo" data-va="Cistelles de regal">Cestas de regalo</h1>
-    <p class="subtitle"
-       data-es="Detalles dulces, románticos y gourmet con un toque premium."
-       data-va="Detalls dolços, romàntics i gourmet amb un toc premium.">
-       Detalles dulces, románticos y gourmet con un toque premium.
-    </p>
+<section id="hero">
+    <div class="hero-text">
+        <h1>Mimos y Regalos</h1>
+        <p data-key="hero_subtitle">
+            Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticos y gourmet.
+        </p>
+        <button class="primary-btn" onclick="scrollToCatalog()" data-key="hero_cta">
+            Ver cestas disponibles
+        </button>
+    </div>
+</section>
 
+<section id="catalogo" class="section">
+    <div class="section-header">
+        <h2 data-key="sec_catalogo_title">Cestas de regalo</h2>
+        <p class="subtitle" data-key="sec_catalogo_subtitle">
+            Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.
+        </p>
+    </div>
     <div id="cards" class="grid"></div>
 </section>
 
-<section id="admin">
-    <h2 data-es="Panel interno" data-va="Panell intern">Panel interno</h2>
+<section id="madre" class="section">
+    <div class="section-header">
+        <h2 data-key="sec_madre_title">Cesta Especial Día de la Madre</h2>
+        <p class="subtitle" data-key="sec_madre_subtitle">
+            Edición especial con productos típicos valencianos y una presentación elegante para celebrar a lo grande.
+        </p>
+    </div>
+    <div id="cards-madre" class="grid"></div>
+</section>
 
-    <div id="login-box" class="panel">
-        <label for="country" data-es="Selecciona país" data-va="Selecciona país">Selecciona país</label>
-        <select id="country">
+<section id="admin" class="section">
+    <div class="section-header">
+        <h2 data-key="sec_admin_title">Panel interno</h2>
+        <p class="subtitle" data-key="sec_admin_subtitle">
+            Acceso exclusivo para gestionar el catálogo de cestas.
+        </p>
+    </div>
+
+    <div id="login-box" class="panel" style="display:none;">
+        <div class="panel-row">
+            <div class="panel-col">
+                <label for="country" data-key="login_country_label">Selecciona país</label>
+                <select id="country">
             <option value="+34">🇪🇸 España (+34)</option>
         </select>
-
-        <label for="phone" data-es="Número de teléfono" data-va="Número de telèfon">Número de teléfono</label>
-        <input type="text" id="phone" placeholder="640645343">
-
-        <button id="login-btn" data-es="Entrar" data-va="Entrar">Entrar</button>
+            </div>
+            <div class="panel-col">
+                <label for="phone" data-key="login_phone_label">Número de teléfono</label>
+                <input type="text" id="phone" placeholder="640645343">
+            </div>
+        </div>
+        <button id="login-btn" class="primary-btn" data-key="btn_login_enter">Entrar</button>
         <p id="login-msg" class="small"></p>
     </div>
 
     <div id="editor" class="panel" style="display:none;">
         <div class="editor-header">
-            <h3 data-es="Editar cestas" data-va="Editar cistelles">Editar cestas</h3>
-            <button id="logout-btn" class="secondary" data-es="Cerrar sesión" data-va="Tancar sessió">Cerrar sesión</button>
+            <h3 data-key="editor_title">Editar cestas</h3>
+            <button id="logout-btn" class="secondary-btn" data-key="btn_logout">Cerrar sesión</button>
         </div>
 
-        <label for="select-cesta" data-es="Seleccionar cesta" data-va="Seleccionar cistella">Seleccionar cesta</label>
+        <label for="select-cesta" data-key="editor_select_label">Seleccionar cesta</label>
         <select id="select-cesta"></select>
 
-        <label for="cesta-nombre" data-es="Nombre" data-va="Nom">Nombre</label>
-        <input type="text" id="cesta-nombre">
-
-        <label for="cesta-precio" data-es="Precio" data-va="Preu">Precio</label>
-        <input type="text" id="cesta-precio">
-
-        <label for="cesta-imagem" data-es="URL de la imagen" data-va="URL de la imatge">URL de la imagen</label>
-        <input type="text" id="cesta-imagem" placeholder="img/cesta1.jpg">
-
-        <label for="cesta-items" data-es="Ítems (uno por línea)" data-va="Ítems (un per línia)">Ítems (uno por línea)</label>
-        <textarea id="cesta-items"></textarea>
-
-        <div class="editor-actions">
-            <button id="save-btn" data-es="Guardar" data-va="Guardar">Guardar</button>
-            <button id="new-btn" class="secondary" data-es="Nueva cesta" data-va="Nova cistella">Nueva cesta</button>
+        <div class="panel-row">
+            <div class="panel-col">
+                <label for="cesta-nombre-es" data-key="editor_name_es">Nombre (Castellano)</label>
+                <input type="text" id="cesta-nombre-es">
+            </div>
+            <div class="panel-col">
+                <label for="cesta-nombre-va" data-key="editor_name_va">Nom (Valencià)</label>
+                <input type="text" id="cesta-nombre-va">
+            </div>
         </div>
 
-        <p class="small" data-es="Los cambios se guardan en este navegador (localStorage)."
-           data-va="Els canvis es guarden en aquest navegador (localStorage).">
-           Los cambios se guardan en este navegador (localStorage).
+        <div class="panel-row">
+            <div class="panel-col">
+                <label for="cesta-precio-es" data-key="editor_price_es">Precio (Castellano)</label>
+                <input type="text" id="cesta-precio-es">
+            </div>
+            <div class="panel-col">
+                <label for="cesta-precio-va" data-key="editor_price_va">Preu (Valencià)</label>
+                <input type="text" id="cesta-precio-va">
+            </div>
+        </div>
+
+        <label for="cesta-imagem" data-key="editor_image">URL de la imagen</label>
+        <input type="text" id="cesta-imagem" placeholder="img/cesta-dulce.jpg">
+
+        <div class="panel-row">
+            <div class="panel-col">
+                <label for="cesta-items-es" data-key="editor_items_es">Ítems (Castellano, uno por línea)</label>
+                <textarea id="cesta-items-es"></textarea>
+            </div>
+            <div class="panel-col">
+                <label for="cesta-items-va" data-key="editor_items_va">Ítems (Valencià, un per línia)</label>
+                <textarea id="cesta-items-va"></textarea>
+            </div>
+        </div>
+
+        <div class="editor-actions">
+            <button id="save-btn" class="primary-btn" data-key="btn_save">Guardar</button>
+            <button id="new-btn" class="secondary-btn" data-key="btn_new">Nueva cesta</button>
+        </div>
+
+        <p class="small" data-key="editor_note">
+            Los cambios se guardan en este navegador (localStorage). Para actualizar el código en GitHub, copia el JSON si lo necesitas.
         </p>
     </div>
 </section>
@@ -112,13 +169,11 @@
 <div id="cart-modal" class="cart-modal">
     <div class="cart-content">
         <div class="cart-header">
-            <h3 data-es="Tu selección" data-va="La teua selecció">Tu selección</h3>
-            <button id="cart-close">✕</button>
+            <h3 data-key="cart_title">Tu selección</h3>
+            <button id="cart-close" class="icon-btn">✕</button>
         </div>
         <ul id="cart-list"></ul>
-        <button id="cart-whatsapp" class="cart-whatsapp"
-                data-es="Enviar pedido por WhatsApp"
-                data-va="Enviar comanda per WhatsApp">
+        <button id="cart-whatsapp" class="primary-btn full-width" data-key="cart_whatsapp">
             Enviar pedido por WhatsApp
         </button>
     </div>
