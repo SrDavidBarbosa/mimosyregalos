@@ -1,0 +1,108 @@
+:root {
+    --bg: #f8f3f4;
+    --card-bg: #ffffff;
+    --primary: #c46f85;
+    --primary-soft: #f2e3e7;
+    --text-main: #4a3f42;
+    --text-soft: #a05f6e;
+    --border-soft: #e6cfd6;
+    --radius: 14px;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+}
+
+header {
+    background: var(--primary-soft);
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+nav a {
+    margin-left: 12px;
+    text-decoration: none;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+.idiomas button {
+    margin-left: 6px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 720px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    margin: 0 0 6px;
+    color: var(--primary);
+}
+
+.card ul {
+    padding-left: 18px;
+}
+
+.card button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#login-box, #editor {
+    background: white;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-soft);
+    margin-top: 20px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+}
