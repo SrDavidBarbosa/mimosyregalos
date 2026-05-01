@@ -11,26 +11,26 @@
     <!-- OpenGraph -->
     <meta property="og:title" content="Mimos y Regalos – Cestas Premium">
     <meta property="og:description" content="Cestas dulces, románticas y gourmet. Pedidos por WhatsApp.">
-    <meta property="og:image" content="https://srdavidbarbosa.github.io/mimosyregalos/img/og-image.jpg">
+    <meta property="og:image" content="img/og-image.jpg">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://srdavidbarbosa.github.io/mimosyregalos/">
 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="public">
 
+<!-- TARJA SUPERIOR FIXA E RESPONSIVA -->
+<aside class="up-top-bar">
+    <div class="up-top-text">
+        <strong>Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.</strong>
+    </div>
+</aside>
+
+<!-- HEADER COM LOGO AJUSTADO -->
 <header>
     <img src="img/logo-mimos.png" alt="Mimos y Regalos" class="logo-img">
 </header>
 
-<aside class="up-top-bar">
-    <div style="font-size:14px; font-weight:400; background-color:#000000; color:#FFFFFF;"> 
-        <a href="#" style="color:#FFFFFF; text-decoration:none;">
-            <strong>Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.</strong>
-        </a>
-    </div>
-</aside>
-
+<!-- MENU SUPERIOR -->
 <div class="top-bar">
     <nav>
         <button class="nav-link active" data-view="all" id="nav-all">Catálogo</button>
@@ -41,15 +41,15 @@
             <button class="lang-btn" data-lang="es">ES</button>
             <button class="lang-btn" data-lang="pt">PT</button>
         </div>
-        <button id="dark-toggle" class="icon-btn" title="Modo oscuro / Dark mode">🌙</button>
+        <button id="dark-toggle" class="icon-btn">🌙</button>
     </div>
 </div>
 
 <main>
 
-<!--<section id="hero">
+<section id="hero">
     <div class="hero-text">
-        <h1>Mimos y Regalos/h1>
+        <h1>Mimos y Regalos</h1>
         <p data-key="hero_subtitle">
             Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.
         </p>
@@ -57,7 +57,7 @@
             Ver cestas disponibles
         </button>
     </div>
-</section>-->
+</section>
 
 <section id="catalogo" class="section">
     <div class="section-header">
@@ -66,23 +66,18 @@
             Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.
         </p>
     </div>
+
     <div id="cards" class="grid"></div>
 
     <div id="madre-extra" class="madre-extra" style="display:none;">
-        <h3 data-key="madre_headline">
-            Una sorpresa inolvidable para el Día de la Madre
-        </h3>
-        <p data-key="madre_text_1">
-            Presentación cuidada, productos seleccionados con cariño y un toque muy valenciano para decir “gracias” de una forma especial.
-        </p>
-        <p data-key="madre_text_2">
-            Ideal para entregar en casa, en el trabajo o como sorpresa en la mañana. Todo listo para emocionar desde el primer vistazo.
-        </p>
+        <h3 data-key="madre_headline">Una sorpresa inolvidable para el Día de la Madre</h3>
+        <p data-key="madre_text_1">Presentación cuidada, productos seleccionados con cariño...</p>
+        <p data-key="madre_text_2">Ideal para entregar en casa...</p>
         <ul>
-            <li data-key="madre_bullet_1">Edición limitada para la fecha</li>
-            <li data-key="madre_bullet_2">Productos típicos valencianos</li>
-            <li data-key="madre_bullet_3">Presentación fotogénica para redes sociales</li>
-            <li data-key="madre_bullet_4">Mensaje personalizado para la mamá</li>
+            <li data-key="madre_bullet_1">Edición limitada</li>
+            <li data-key="madre_bullet_2">Productos valencianos</li>
+            <li data-key="madre_bullet_3">Presentación fotogénica</li>
+            <li data-key="madre_bullet_4">Mensaje personalizado</li>
         </ul>
     </div>
 </section>
@@ -93,7 +88,6 @@
     © 2026 Mimos y Regalos
 </footer>
 
-<!-- Carrinho flutuante -->
 <button id="cart-button" class="cart-button">
     🧺 <span id="cart-count">0</span>
 </button>
@@ -108,29 +102,6 @@
         <button id="cart-whatsapp" class="primary-btn full-width" data-key="cart_whatsapp">
             Enviar pedido por WhatsApp
         </button>
-    </div>
-</div>
-
-<!-- POPUP DETALHES CESTA -->
-<div id="details-modal" class="cart-modal">
-    <div class="cart-content details-content">
-        <div class="cart-header">
-            <h3 id="details-title"></h3>
-            <button id="details-close" class="icon-btn">✕</button>
-        </div>
-        <p id="details-price" class="details-price"></p>
-        <p id="details-phrase" class="details-phrase"></p>
-        <ul id="details-items" class="details-items"></ul>
-        <div id="details-allergies" class="details-allergies"></div>
-        <div class="details-actions">
-            <button id="details-whatsapp" class="primary-btn">
-                <span>WhatsApp</span>
-            </button>
-            <button id="details-allergy-info" class="secondary-btn small-btn" data-key="btn_allergies">
-                Alergias
-            </button>
-        </div>
-        <p id="details-allergy-text" class="small" style="display:none;"></p>
     </div>
 </div>
 
