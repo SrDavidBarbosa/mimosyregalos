@@ -1,4 +1,3 @@
-// Estado
 let currentLang = localStorage.getItem("mimos_lang") || "es";
 let currentView = "all";
 let cart = [];
@@ -20,7 +19,8 @@ const uiTexts = {
     card_details: "Ver detalles",
     card_cart: "Añadir al carrito",
     allergy_text_prefix: "Esta cesta puede contener:",
-    cart_empty: "No hay productos en el carrito."
+    cart_empty: "No hay productos en el carrito.",
+    details_whatsapp: "Hacer pedido por WhatsApp"
   },
   pt: {
     sec_catalogo_title: "Cestas de presente",
@@ -37,11 +37,12 @@ const uiTexts = {
     card_details: "Ver detalhes",
     card_cart: "Adicionar ao carrinho",
     allergy_text_prefix: "Esta cesta pode conter:",
-    cart_empty: "Não há produtos no carrinho."
+    cart_empty: "Não há produtos no carrinho.",
+    details_whatsapp: "Fazer pedido pelo WhatsApp"
   }
 };
 
-// Cestas
+// 10 CESTAS
 const cestas = [
   {
     id: "dulce-detalle",
@@ -112,6 +113,91 @@ const cestas = [
     }
   },
   {
+    id: "chocolate",
+    categoria: "general",
+    imagem: "img/cesta-chocolate.jpg",
+    premium: true,
+    alergias: ["lactosa", "frutos secos"],
+    nombre: { es: "Cesta Amantes del Chocolate", pt: "Cesta Amantes de Chocolate" },
+    precio: { es: "€45–€60", pt: "€45–€60" },
+    frase: {
+      es: "Para quien no vive sin chocolate.",
+      pt: "Para quem não vive sem chocolate."
+    },
+    items: {
+      es: ["Tabletas de chocolate", "Bombones surtidos", "Chocolate caliente", "Galletas de cacao", "Barritas rellenas"],
+      pt: ["Tabletes de chocolate", "Bombons sortidos", "Chocolate quente", "Biscoitos de cacau", "Barrinhas recheadas"]
+    }
+  },
+  {
+    id: "gourmet",
+    categoria: "general",
+    imagem: "img/cesta-gourmet.jpg",
+    premium: true,
+    alergias: ["gluten", "frutos secos"],
+    nombre: { es: "Cesta Gourmet Mediterránea", pt: "Cesta Gourmet Mediterrânea" },
+    precio: { es: "€55–€80", pt: "€55–€80" },
+    frase: {
+      es: "Sabores mediterráneos para paladares exigentes.",
+      pt: "Sabores mediterrâneos para paladares exigentes."
+    },
+    items: {
+      es: ["Aceite de oliva virgen extra", "Queso curado", "Embutidos selectos", "Panecillos gourmet", "Aceitunas", "Paté"],
+      pt: ["Azeite de oliva extra virgem", "Queijo curado", "Embutidos selecionados", "Pãezinhos gourmet", "Azeitonas", "Patê"]
+    }
+  },
+  {
+    id: "relax",
+    categoria: "general",
+    imagem: "img/cesta-relax.jpg",
+    premium: false,
+    alergias: [],
+    nombre: { es: "Cesta Relax & Spa", pt: "Cesta Relax & Spa" },
+    precio: { es: "€35–€50", pt: "€35–€50" },
+    frase: {
+      es: "Un momento de calma en forma de regalo.",
+      pt: "Um momento de calma em forma de presente."
+    },
+    items: {
+      es: ["Vela aromática", "Sales de baño", "Mascarilla facial", "Infusiones relajantes", "Esponja suave"],
+      pt: ["Vela aromática", "Sais de banho", "Máscara facial", "Infusões relaxantes", "Esponja macia"]
+    }
+  },
+  {
+    id: "cumple",
+    categoria: "general",
+    imagem: "img/cesta-cumple.jpg",
+    premium: false,
+    alergias: ["gluten", "lactosa"],
+    nombre: { es: "Cesta Cumpleaños Feliz", pt: "Cesta Aniversário Feliz" },
+    precio: { es: "€30–€45", pt: "€30–€45" },
+    frase: {
+      es: "Todo lo necesario para celebrar con dulzura.",
+      pt: "Tudo o que precisa para celebrar com doçura."
+    },
+    items: {
+      es: ["Mini tarta", "Velas de cumpleaños", "Chocolates", "Caramelos", "Confeti", "Tarjeta de felicitación"],
+      pt: ["Mini bolo", "Velas de aniversário", "Chocolates", "Balas", "Confete", "Cartão de felicitações"]
+    }
+  },
+  {
+    id: "pareja",
+    categoria: "general",
+    imagem: "img/cesta-pareja.jpg",
+    premium: true,
+    alergias: ["lactosa"],
+    nombre: { es: "Cesta Pareja & Brindis", pt: "Cesta Casal & Brinde" },
+    precio: { es: "€48–€70", pt: "€48–€70" },
+    frase: {
+      es: "Para brindar juntos en una ocasión especial.",
+      pt: "Para brindar juntos em uma ocasião especial."
+    },
+    items: {
+      es: ["Botella de cava o vino", "Chocolates finos", "Snacks salados", "Copas decorativas", "Tarjeta romántica"],
+      pt: ["Garrafa de espumante ou vinho", "Chocolates finos", "Snacks salgados", "Taças decorativas", "Cartão romântico"]
+    }
+  },
+  {
     id: "madre-valenciana",
     categoria: "madre",
     imagem: "img/cesta-madre.jpg",
@@ -156,6 +242,12 @@ function applyTexts() {
     const key = el.getAttribute("data-key");
     if (dict[key]) el.textContent = dict[key];
   });
+
+  // Botão de detalhes do modal também precisa seguir o idioma
+  const detailsBtn = document.getElementById("details-whatsapp");
+  if (detailsBtn) {
+    detailsBtn.textContent = uiTexts[currentLang].details_whatsapp;
+  }
 }
 
 // Render catálogo
@@ -167,7 +259,7 @@ function renderCatalog() {
   applyTexts();
   container.innerHTML = "";
 
-  let list = cestas;
+  let list;
   if (currentView === "madre") {
     list = cestas.filter(c => c.categoria === "madre");
     if (madreExtra) madreExtra.style.display = "block";
@@ -234,6 +326,7 @@ function openDetails(id) {
   const itemsList = document.getElementById("details-items");
   const allergyText = document.getElementById("details-allergy-text");
   const allergiesWrap = document.getElementById("details-allergies");
+  const detailsBtn = document.getElementById("details-whatsapp");
 
   title.textContent = cesta.nombre[lang];
   price.textContent = cesta.precio[lang];
@@ -255,6 +348,8 @@ function openDetails(id) {
     allergiesWrap.appendChild(span);
   });
 
+  detailsBtn.textContent = dict.details_whatsapp;
+
   modal.style.display = "flex";
 
   document.getElementById("details-close").onclick = () => {
@@ -264,8 +359,12 @@ function openDetails(id) {
     if (e.target === modal) modal.style.display = "none";
   };
 
-  document.getElementById("details-whatsapp").onclick = () => {
-    const msg = encodeURIComponent(`Olá! Gostaria de saber mais sobre a cesta: ${cesta.nombre[lang]}.`);
+  detailsBtn.onclick = () => {
+    const baseMsg =
+      lang === "es"
+        ? `Hola! Me gustaría saber más sobre la cesta: ${cesta.nombre[lang]}.`
+        : `Olá! Gostaria de saber mais sobre a cesta: ${cesta.nombre[lang]}.`;
+    const msg = encodeURIComponent(baseMsg);
     window.open(`https://wa.me/34640645343?text=${msg}`, "_blank");
   };
 }
@@ -281,9 +380,9 @@ function setupCartModal() {
   const cartModal = document.getElementById("cart-modal");
   const cartClose = document.getElementById("cart-close");
   const cartList = document.getElementById("cart-list");
-  const dict = uiTexts[currentLang];
 
   cartBtn.onclick = () => {
+    const dict = uiTexts[currentLang];
     cartList.innerHTML = "";
     if (cart.length === 0) {
       const li = document.createElement("li");
@@ -297,6 +396,7 @@ function setupCartModal() {
         cartList.appendChild(li);
       });
     }
+    applyTexts();
     cartModal.style.display = "flex";
   };
 
@@ -307,11 +407,16 @@ function setupCartModal() {
 
   document.getElementById("cart-whatsapp").onclick = () => {
     if (cart.length === 0) return;
+    const dict = uiTexts[currentLang];
     const nomes = cart.map(id => {
       const c = cestas.find(x => x.id === id);
       return c ? c.nombre[currentLang] : id;
     });
-    const msg = encodeURIComponent(`Olá! Gostaria de fazer um pedido das seguintes cestas:\n- ${nomes.join("\n- ")}`);
+    const baseMsg =
+      currentLang === "es"
+        ? `Hola! Me gustaría hacer un pedido de las siguientes cestas:\n- ${nomes.join("\n- ")}`
+        : `Olá! Gostaria de fazer um pedido das seguintes cestas:\n- ${nomes.join("\n- ")}`;
+    const msg = encodeURIComponent(baseMsg);
     window.open(`https://wa.me/34640645343?text=${msg}`, "_blank");
   };
 }
