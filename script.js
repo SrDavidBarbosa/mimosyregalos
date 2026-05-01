@@ -7,19 +7,28 @@ let currentLang = localStorage.getItem("mimosyregalos_lang") || "es";
 // Modo de visualização: all | madre
 let currentView = "all";
 
-// Cestas com textos em ES/VA
+// Carinho
+let cart = [];
+
+// Cestas base (ES + PT-BR, premium + alergias)
 let cestas = [
     {
         id: "dulce-detalle",
         categoria: "general",
         imagem: "img/cesta-dulce.jpg",
+        premium: false,
+        alergias: ["gluten", "lactosa"],
         nombre: {
             es: "Cesta Dulce Detalle",
-            va: "Cistella Dolç Detall"
+            pt: "Cesta Doce Detalhe"
         },
         precio: {
             es: "€22–€28",
-            va: "22–28 €"
+            pt: "€22–€28"
+        },
+        frase: {
+            es: "Un detalle dulce para alegrar el día.",
+            pt: "Um mimo doce para alegrar o dia."
         },
         items: {
             es: [
@@ -30,13 +39,13 @@ let cestas = [
                 "Mini Nutella",
                 "Tarjeta personalizada"
             ],
-            va: [
-                "Xocolata simple",
-                "Galetes",
-                "Caramels",
-                "Suc xicotet",
+            pt: [
+                "Chocolate simples",
+                "Biscoitos",
+                "Balas",
+                "Suco pequeno",
                 "Mini Nutella",
-                "Targeta personalitzada"
+                "Cartão personalizado"
             ]
         }
     },
@@ -44,13 +53,19 @@ let cestas = [
         id: "felicidad",
         categoria: "general",
         imagem: "img/cesta-felicidad.jpg",
+        premium: false,
+        alergias: ["gluten", "lactosa"],
         nombre: {
             es: "Cesta Felicidad",
-            va: "Cistella Felicitat"
+            pt: "Cesta Felicidade"
         },
         precio: {
             es: "€26–€32",
-            va: "26–32 €"
+            pt: "€26–€32"
+        },
+        frase: {
+            es: "Dulces y sonrisas en una sola cesta.",
+            pt: "Doces e sorrisos em uma só cesta."
         },
         items: {
             es: [
@@ -61,13 +76,13 @@ let cestas = [
                 "Zumo",
                 "Tarjeta"
             ],
-            va: [
-                "Xocolates variats",
-                "Galetes artesanals",
-                "Caramels",
-                "Mini pastís",
-                "Suc",
-                "Targeta"
+            pt: [
+                "Chocolates variados",
+                "Cookies artesanais",
+                "Balas",
+                "Mini bolo",
+                "Suco",
+                "Cartão"
             ]
         }
     },
@@ -75,13 +90,19 @@ let cestas = [
         id: "cumpleanos",
         categoria: "general",
         imagem: "img/cesta-cumple.jpg",
+        premium: false,
+        alergias: ["gluten", "lactosa"],
         nombre: {
             es: "Cesta Cumpleaños",
-            va: "Cistella Aniversari"
+            pt: "Cesta Aniversário"
         },
         precio: {
             es: "€28–€35",
-            va: "28–35 €"
+            pt: "€28–€35"
+        },
+        frase: {
+            es: "Todo listo para cantar cumpleaños feliz.",
+            pt: "Tudo pronto para cantar parabéns."
         },
         items: {
             es: [
@@ -94,15 +115,15 @@ let cestas = [
                 "Confeti",
                 "Tarjeta"
             ],
-            va: [
-                "Mini pastís",
-                "Espelmes",
-                "Globus",
-                "Xocolates",
-                "Dolços",
-                "Suc",
-                "Confeti",
-                "Targeta"
+            pt: [
+                "Mini bolo",
+                "Velas",
+                "Balão",
+                "Chocolates",
+                "Doces",
+                "Suco",
+                "Confete",
+                "Cartão"
             ]
         }
     },
@@ -110,13 +131,19 @@ let cestas = [
         id: "romance",
         categoria: "general",
         imagem: "img/cesta-romance.jpg",
+        premium: true,
+        alergias: ["lactosa", "frutos secos"],
         nombre: {
             es: "Cesta Romance",
-            va: "Cistella Romàntica"
+            pt: "Cesta Romance"
         },
         precio: {
             es: "€38–€55",
-            va: "38–55 €"
+            pt: "€38–€55"
+        },
+        frase: {
+            es: "Detalles románticos para decir te quiero.",
+            pt: "Detalhes românticos para dizer eu te amo."
         },
         items: {
             es: [
@@ -128,14 +155,14 @@ let cestas = [
                 "Chocolate gourmet",
                 "Tarjeta"
             ],
-            va: [
+            pt: [
                 "Ferrero Rocher",
                 "Raffaello",
-                "Peluix premium",
+                "Pelúcia premium",
                 "Rosa decorativa",
-                "Espelma aromàtica",
-                "Xocolata gourmet",
-                "Targeta"
+                "Vela aromática",
+                "Chocolate gourmet",
+                "Cartão"
             ]
         }
     },
@@ -143,13 +170,19 @@ let cestas = [
         id: "dulce-tierna",
         categoria: "general",
         imagem: "img/cesta-dulce-tierna.jpg",
+        premium: true,
+        alergias: ["gluten", "lactosa", "frutos secos"],
         nombre: {
             es: "Cesta Dulce & Tierna",
-            va: "Cistella Dolça & Tendra"
+            pt: "Cesta Doce & Fofa"
         },
         precio: {
             es: "€40–€55",
-            va: "40–55 €"
+            pt: "€40–€55"
+        },
+        frase: {
+            es: "Perfecta para sorprender con cariño.",
+            pt: "Perfeita para surpreender com carinho."
         },
         items: {
             es: [
@@ -163,16 +196,16 @@ let cestas = [
                 "Tarjeta",
                 "Mini pastel"
             ],
-            va: [
+            pt: [
                 "Ferrero Rocher",
                 "Raffaello",
                 "Mini Nutella",
-                "Peluix",
-                "Dolços variats",
-                "Xocolata",
+                "Pelúcia",
+                "Doces variados",
+                "Chocolate",
                 "Caixa decorada",
-                "Targeta",
-                "Mini pastís"
+                "Cartão",
+                "Mini bolo"
             ]
         }
     },
@@ -180,13 +213,19 @@ let cestas = [
         id: "desayuno",
         categoria: "general",
         imagem: "img/cesta-desayuno.jpg",
+        premium: false,
+        alergias: ["gluten", "lactosa"],
         nombre: {
             es: "Cesta Desayuno",
-            va: "Cistella Esmorzar"
+            pt: "Cesta Café da Manhã"
         },
         precio: {
             es: "€40–€55",
-            va: "40–55 €"
+            pt: "€40–€55"
+        },
+        frase: {
+            es: "Empieza el día con un desayuno especial.",
+            pt: "Comece o dia com um café da manhã especial."
         },
         items: {
             es: [
@@ -200,16 +239,16 @@ let cestas = [
                 "Galletas",
                 "Yogur o granola"
             ],
-            va: [
-                "Cafè",
-                "Te",
+            pt: [
+                "Café",
+                "Chá",
                 "Croissants",
-                "Melmelades mini",
+                "Geleias mini",
                 "Mini Nutella",
-                "Suc",
-                "Fruita",
-                "Galetes",
-                "Iogurt o granola"
+                "Suco",
+                "Frutas",
+                "Biscoitos",
+                "Iogurte ou granola"
             ]
         }
     },
@@ -217,13 +256,19 @@ let cestas = [
         id: "chocolate",
         categoria: "general",
         imagem: "img/cesta-chocolate.jpg",
+        premium: true,
+        alergias: ["lactosa", "frutos secos"],
         nombre: {
             es: "Cesta Amantes del Chocolate",
-            va: "Cistella Amants de la Xocolata"
+            pt: "Cesta Amantes de Chocolate"
         },
         precio: {
             es: "€45–€60",
-            va: "45–60 €"
+            pt: "€45–€60"
+        },
+        frase: {
+            es: "Para quien no vive sin chocolate.",
+            pt: "Para quem não vive sem chocolate."
         },
         items: {
             es: [
@@ -237,16 +282,16 @@ let cestas = [
                 "Chocolate caliente",
                 "Marshmallows"
             ],
-            va: [
+            pt: [
                 "Ferrero Rocher",
                 "Raffaello",
                 "Kinder",
                 "Milka",
                 "Mini Nutella",
-                "Galetes",
-                "Brownie o mini pastís",
-                "Xocolata calenta",
-                "Núvols de sucre"
+                "Biscoitos",
+                "Brownie ou mini bolo",
+                "Chocolate quente",
+                "Marshmallows"
             ]
         }
     },
@@ -254,13 +299,19 @@ let cestas = [
         id: "iberica",
         categoria: "general",
         imagem: "img/cesta-iberica.jpg",
+        premium: true,
+        alergias: ["gluten", "frutos secos"],
         nombre: {
             es: "Cesta Gourmet Ibérica",
-            va: "Cistella Gourmet Ibèrica"
+            pt: "Cesta Gourmet Ibérica"
         },
         precio: {
             es: "€60–€85",
-            va: "60–85 €"
+            pt: "€60–€85"
+        },
+        frase: {
+            es: "Sabores ibéricos para un momento especial.",
+            pt: "Sabores ibéricos para um momento especial."
         },
         items: {
             es: [
@@ -273,15 +324,15 @@ let cestas = [
                 "Chocolate premium",
                 "Frutos secos"
             ],
-            va: [
-                "Pernil ibèric",
-                "Formatge curat",
-                "Torrades",
-                "Olives",
-                "Oli d'oliva verge extra",
-                "Vi negre",
-                "Xocolata premium",
-                "Fruits secs"
+            pt: [
+                "Presunto ibérico",
+                "Queijo curado",
+                "Torradas",
+                "Azeitonas",
+                "Azeite de oliva extra virgem",
+                "Vinho tinto",
+                "Chocolate premium",
+                "Frutos secos"
             ]
         }
     },
@@ -289,13 +340,19 @@ let cestas = [
         id: "madre-valenciana",
         categoria: "madre",
         imagem: "img/cesta-madre.jpg",
+        premium: true,
+        alergias: ["gluten", "lactosa", "frutos secos"],
         nombre: {
             es: "Cesta Especial Día de la Madre – Edición Valenciana",
-            va: "Cistella Especial Dia de la Mare – Edició Valenciana"
+            pt: "Cesta Especial Dia das Mães – Edição Valenciana"
         },
         precio: {
             es: "€55–€85",
-            va: "55–85 €"
+            pt: "€55–€85"
+        },
+        frase: {
+            es: "Un homenaje lleno de sabor y cariño.",
+            pt: "Uma homenagem cheia de sabor e carinho."
         },
         items: {
             es: [
@@ -307,21 +364,21 @@ let cestas = [
                 "Mini ramo de flores secas",
                 "Tarjeta especial “Feliz Día de la Madre”"
             ],
-            va: [
-                "Orxata artesanal valenciana",
-                "Fartons tradicionals",
-                "Melmelada de taronja valenciana",
-                "Espelma aromàtica de flor de taronger",
-                "Xocolata amb ametla marcona",
-                "Mini ram de flors seques",
-                "Targeta especial “Feliç Dia de la Mare”"
+            pt: [
+                "Horchata artesanal valenciana",
+                "Fartons tradicionais",
+                "Geleia de laranja valenciana",
+                "Vela aromática de flor de laranjeira",
+                "Chocolate com amêndoa marcona",
+                "Mini buquê de flores secas",
+                "Cartão especial “Feliz Dia das Mães”"
             ]
         }
     }
 ];
 
 // Carregar de localStorage se existir
-const saved = localStorage.getItem("mimosyregalos_cestas");
+const saved = localStorage.getItem("mimosyregalos_cestas_v1");
 if (saved) {
     try {
         const parsed = JSON.parse(saved);
@@ -332,7 +389,7 @@ if (saved) {
 // Traduções de interface
 const uiTexts = {
     es: {
-        hero_subtitle: "Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticos y gourmet.",
+        hero_subtitle: "Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.",
         hero_cta: "Ver cestas disponibles",
         sec_catalogo_title: "Cestas de regalo",
         sec_catalogo_subtitle: "Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.",
@@ -345,130 +402,196 @@ const uiTexts = {
         madre_bullet_4: "Mensaje personalizado para la mamá",
         cart_title: "Tu selección",
         cart_whatsapp: "Enviar pedido por WhatsApp",
-        login_title: "Acceso interno",
-        login_desc: "Introduce tu número autorizado para gestionar el catálogo.",
-        login_country_label: "País",
-        login_phone_label: "Número de teléfono",
-        btn_login_enter: "Entrar",
-        btn_logout: "Cerrar sesión",
-        editor_title: "Editar cestas",
-        editor_select_label: "Seleccionar cesta",
-        editor_name_es: "Nombre (Castellano)",
-        editor_name_va: "Nom (Valencià)",
-        editor_price_es: "Precio (Castellano)",
-        editor_price_va: "Preu (Valencià)",
-        editor_image: "URL de la imagen",
-        editor_image_upload: "Subir imagen (galería / cámara / escritorio)",
-        editor_items_es: "Ítems (Castellano, uno por línea)",
-        editor_items_va: "Ítems (Valencià, un per línia)",
-        btn_save: "Guardar",
-        btn_new: "Nueva cesta",
-        editor_note: "Los cambios se guardan en este navegador (localStorage). Para actualizar el código en GitHub, copia el JSON si lo necesitas.",
         login_unauthorized: "Número no autorizado.",
         cart_empty: "No hay productos en el carrito.",
-        card_whatsapp: "WhatsApp directo",
-        card_cart: "Añadir al carrito"
+        card_details: "Ver detalles",
+        card_cart: "Añadir al carrito",
+        btn_allergies: "Alergias",
+        allergy_text_prefix: "Esta cesta puede contener:"
     },
-    va: {
-        hero_subtitle: "Cistelles de regal premium a València, pensades per a sorprendre amb detalls dolços, romàntics i gourmet.",
-        hero_cta: "Veure cistelles disponibles",
-        sec_catalogo_title: "Cistelles de regal",
-        sec_catalogo_subtitle: "Tria la cistella ideal per a aniversaris, sorpreses romàntiques o un detall dolç inesperat.",
-        madre_headline: "Una sorpresa inoblidable per al Dia de la Mare",
-        madre_text_1: "Presentació cuidada, productes seleccionats amb afecte i un toc molt valencià per a dir “gràcies” d'una forma especial.",
-        madre_text_2: "Ideal per a entregar a casa, a la faena o com a sorpresa al matí. Tot llest per a emocionar des de la primera ullada.",
-        madre_bullet_1: "Edició limitada per a la data",
-        madre_bullet_2: "Productes típics valencians",
-        madre_bullet_3: "Presentació fotogènica per a xarxes socials",
-        madre_bullet_4: "Missatge personalitzat per a la mare",
-        cart_title: "La teua selecció",
-        cart_whatsapp: "Enviar comanda per WhatsApp",
-        login_title: "Accés intern",
-        login_desc: "Introdueix el teu número autoritzat per a gestionar el catàleg.",
-        login_country_label: "País",
-        login_phone_label: "Número de telèfon",
-        btn_login_enter: "Entrar",
-        btn_logout: "Tancar sessió",
-        editor_title: "Editar cistelles",
-        editor_select_label: "Seleccionar cistella",
-        editor_name_es: "Nom (Castellà)",
-        editor_name_va: "Nom (Valencià)",
-        editor_price_es: "Preu (Castellà)",
-        editor_price_va: "Preu (Valencià)",
-        editor_image: "URL de la imatge",
-        editor_image_upload: "Pujar imatge (galeria / càmera / escriptori)",
-        editor_items_es: "Ítems (Castellà, un per línia)",
-        editor_items_va: "Ítems (Valencià, un per línia)",
-        btn_save: "Guardar",
-        btn_new: "Nova cistella",
-        editor_note: "Els canvis es guarden en aquest navegador (localStorage). Per a actualitzar el codi en GitHub, copia el JSON si ho necessites.",
-        login_unauthorized: "Número no autoritzat.",
-        cart_empty: "No hi ha productes al carret.",
-        card_whatsapp: "WhatsApp directe",
-        card_cart: "Afegir al carret"
+    pt: {
+        hero_subtitle: "Cestas de presente premium em Valência, pensadas para surpreender com detalhes doces, românticos e gourmet.",
+        hero_cta: "Ver cestas disponíveis",
+        sec_catalogo_title: "Cestas de presente",
+        sec_catalogo_subtitle: "Escolha a cesta ideal para aniversários, surpresas românticas ou um mimo doce inesperado.",
+        madre_headline: "Uma surpresa inesquecível para o Dia das Mães",
+        madre_text_1: "Apresentação cuidadosa, produtos selecionados com carinho e um toque bem valenciano para dizer “obrigada” de forma especial.",
+        madre_text_2: "Ideal para entregar em casa, no trabalho ou como surpresa pela manhã. Tudo pronto para emocionar no primeiro olhar.",
+        madre_bullet_1: "Edição limitada para a data",
+        madre_bullet_2: "Produtos típicos valencianos",
+        madre_bullet_3: "Apresentação fotogênica para redes sociais",
+        madre_bullet_4: "Mensagem personalizada para a mamãe",
+        cart_title: "Sua seleção",
+        cart_whatsapp: "Enviar pedido pelo WhatsApp",
+        login_unauthorized: "Número não autorizado.",
+        cart_empty: "Não há produtos no carrinho.",
+        card_details: "Ver detalhes",
+        card_cart: "Adicionar ao carrinho",
+        btn_allergies: "Alergias",
+        allergy_text_prefix: "Esta cesta pode conter:"
     }
 };
 
-// Carrinho
-let cart = [];
+// Emojis para itens premium
+function decorateItem(cesta, item) {
+    if (!cesta.premium) return item;
+    const emojis = ["✨", "🎁", "💝", "🍫", "🌸", "🥂"];
+    const e = emojis[Math.floor(Math.random() * emojis.length)];
+    return `${e} ${item}`;
+}
 
-// Render catálogo
+// Render catálogo (página pública)
 function renderCatalog() {
     const container = document.getElementById("cards");
+    if (!container) return; // estamos no admin
+
     const madreExtra = document.getElementById("madre-extra");
     container.innerHTML = "";
 
     const lang = currentLang;
     const dict = uiTexts[lang];
 
-    // Título / subtítulo
     document.querySelectorAll("[data-key]").forEach(el => {
         const key = el.getAttribute("data-key");
         if (dict[key]) el.textContent = dict[key];
     });
 
-    let list = cestas;
+    let list;
     if (currentView === "madre") {
-        list = cestas.filter(c => c.id === "madre-valenciana");
-        madreExtra.style.display = "block";
+        list = cestas.filter(c => c.categoria === "madre");
+        if (madreExtra) madreExtra.style.display = "block";
     } else {
         list = cestas.filter(c => c.categoria === "general");
-        madreExtra.style.display = "none";
+        if (madreExtra) madreExtra.style.display = "none";
     }
 
     list.forEach((c, index) => {
         const card = document.createElement("div");
         card.className = "card";
-        card.style.animationDelay = `${index * 0.05}s`;
 
         const nome = c.nombre[lang] || c.nombre.es;
+        const frase = c.frase[lang] || c.frase.es;
         const preco = c.precio[lang] || c.precio.es;
-        const itens = c.items[lang] || c.items.es;
 
         card.innerHTML = `
-            <div class="card-img-wrapper">
-                <img src="${c.imagem || 'img/default.jpg'}" class="card-img" alt="${nome}">
-            </div>
-            <div class="card-title">${nome}</div>
-            <div class="card-price">${preco}</div>
-            <ul class="card-items">
-                ${itens.map(i => `<li>${i}</li>`).join("")}
-            </ul>
-            <div class="card-actions">
-                <button class="primary-btn btn-whatsapp" onclick="pedirWhatsApp('${encodeURIComponent(nome)}')">
-                    ${dict.card_whatsapp}
-                </button>
-                <button class="secondary-btn btn-cart" onclick="addToCart('${c.id}')">
-                    ${dict.card_cart}
-                </button>
+            <div class="card-inner" data-id="${c.id}">
+                <div class="card-face card-front">
+                    <div class="card-img-wrapper">
+                        <img src="${c.imagem || 'img/default.jpg'}" class="card-img" alt="${nome}">
+                    </div>
+                    <div class="card-front-title">${nome}</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-title">${nome}</div>
+                    <div class="card-price">${preco}</div>
+                    <div class="card-phrase">${frase}</div>
+                    <div class="card-actions">
+                        <button class="primary-btn" data-action="details">${dict.card_details}</button>
+                        <button class="secondary-btn btn-cart" data-action="cart">${dict.card_cart}</button>
+                    </div>
+                </div>
             </div>
         `;
+
+        const inner = card.querySelector(".card-inner");
+
+        // Hover (desktop)
+        inner.addEventListener("mouseenter", () => {
+            inner.classList.add("flipped");
+        });
+        inner.addEventListener("mouseleave", () => {
+            inner.classList.remove("flipped");
+        });
+
+        // Click (mobile / fallback)
+        inner.addEventListener("click", (e) => {
+            const action = e.target.getAttribute("data-action");
+            if (action === "details") {
+                openDetails(c.id);
+                return;
+            }
+            if (action === "cart") {
+                addToCart(c.id);
+                return;
+            }
+            // se clicou em área neutra, alterna giro
+            if (!action) {
+                inner.classList.toggle("flipped");
+            }
+        });
 
         container.appendChild(card);
     });
 }
 
-// WhatsApp individual
+// Detalhes popup
+const detailsModal = document.getElementById("details-modal");
+const detailsClose = document.getElementById("details-close");
+const detailsTitle = document.getElementById("details-title");
+const detailsPrice = document.getElementById("details-price");
+const detailsPhrase = document.getElementById("details-phrase");
+const detailsItems = document.getElementById("details-items");
+const detailsAllergies = document.getElementById("details-allergies");
+const detailsAllergyText = document.getElementById("details-allergy-text");
+const detailsWhatsApp = document.getElementById("details-whatsapp");
+const detailsAllergyInfo = document.getElementById("details-allergy-info");
+
+function openDetails(id) {
+    const c = cestas.find(x => x.id === id);
+    if (!c || !detailsModal) return;
+
+    const lang = currentLang;
+    const dict = uiTexts[lang];
+
+    const nome = c.nombre[lang] || c.nombre.es;
+    const preco = c.precio[lang] || c.precio.es;
+    const frase = c.frase[lang] || c.frase.es;
+    const itens = c.items[lang] || c.items.es;
+
+    detailsTitle.textContent = nome;
+    detailsPrice.textContent = preco;
+    detailsPhrase.textContent = frase;
+
+    detailsItems.innerHTML = itens
+        .map(i => `<li>${decorateItem(c, i)}</li>`)
+        .join("");
+
+    detailsAllergies.innerHTML = "";
+    if (c.alergias && c.alergias.length > 0) {
+        c.alergias.forEach(a => {
+            const badge = document.createElement("span");
+            badge.className = "allergy-badge";
+            badge.textContent = a;
+            detailsAllergies.appendChild(badge);
+        });
+    }
+
+    detailsAllergyText.style.display = "none";
+    detailsAllergyText.textContent = `${dict.allergy_text_prefix} ${c.alergias.join(", ")}.`;
+
+    detailsWhatsApp.onclick = () => {
+        const msg = `Hola, me gustaría pedir la cesta “${nome}” (${preco}). ¿Está disponible para entrega?`;
+        window.open(`https://wa.me/34640645343?text=${encodeURIComponent(msg)}`, "_blank");
+    };
+
+    detailsAllergyInfo.onclick = () => {
+        detailsAllergyText.style.display =
+            detailsAllergyText.style.display === "none" ? "block" : "none";
+    };
+
+    detailsModal.style.display = "flex";
+}
+
+if (detailsClose) {
+    detailsClose.onclick = () => {
+        detailsModal.style.display = "none";
+    };
+    detailsModal.addEventListener("click", (e) => {
+        if (e.target === detailsModal) detailsModal.style.display = "none";
+    });
+}
+
+// WhatsApp individual (botão direto se quiser usar em outro lugar)
 function pedirWhatsApp(nombreEncoded) {
     const nombre = decodeURIComponent(nombreEncoded);
     const msg = `Hola, me gustaría pedir la cesta “${nombre}”. ¿Está disponible para entrega hoy?`;
@@ -479,14 +602,16 @@ window.pedirWhatsApp = pedirWhatsApp;
 // Carrinho
 function addToCart(id) {
     const cesta = cestas.find(c => c.id === id);
-    if (!cesta) return;
+    if (!c) return;
     cart.push(cesta);
     updateCartCount();
 }
 window.addToCart = addToCart;
 
 function updateCartCount() {
-    document.getElementById("cart-count").textContent = cart.length;
+    const el = document.getElementById("cart-count");
+    if (!el) return;
+    el.textContent = cart.length;
 }
 
 const cartButton = document.getElementById("cart-button");
@@ -495,20 +620,24 @@ const cartClose = document.getElementById("cart-close");
 const cartList = document.getElementById("cart-list");
 const cartWhatsApp = document.getElementById("cart-whatsapp");
 
-cartButton.onclick = () => {
-    renderCartModal();
-    cartModal.style.display = "flex";
-};
+if (cartButton && cartModal) {
+    cartButton.onclick = () => {
+        renderCartModal();
+        cartModal.style.display = "flex";
+    };
+}
 
-cartClose.onclick = () => {
-    cartModal.style.display = "none";
-};
-
-cartModal.addEventListener("click", (e) => {
-    if (e.target === cartModal) cartModal.style.display = "none";
-});
+if (cartClose && cartModal) {
+    cartClose.onclick = () => {
+        cartModal.style.display = "none";
+    };
+    cartModal.addEventListener("click", (e) => {
+        if (e.target === cartModal) cartModal.style.display = "none";
+    });
+}
 
 function renderCartModal() {
+    if (!cartList) return;
     cartList.innerHTML = "";
     const lang = currentLang;
     const dict = uiTexts[lang];
@@ -528,22 +657,24 @@ function renderCartModal() {
     });
 }
 
-cartWhatsApp.onclick = () => {
-    if (cart.length === 0) return;
-    const lang = currentLang;
-    const dict = uiTexts[lang];
-    const lines = cart.map((c, i) => {
-        const nome = c.nombre[lang] || c.nombre.es;
-        const preco = c.precio[lang] || c.precio.es;
-        return `${i + 1}. ${nome} (${preco})`;
-    });
-    const msg = `Hola, me gustaría pedir estas cestas:\n\n${lines.join("\n")}\n\n¿Están disponibles para entrega hoy?`;
-    window.open(`https://wa.me/34640645343?text=${encodeURIComponent(msg)}`, "_blank");
-};
+if (cartWhatsApp) {
+    cartWhatsApp.onclick = () => {
+        if (cart.length === 0) return;
+        const lang = currentLang;
+        const lines = cart.map((c, i) => {
+            const nome = c.nombre[lang] || c.nombre.es;
+            const preco = c.precio[lang] || c.precio.es;
+            return `${i + 1}. ${nome} (${preco})`;
+        });
+        const msg = `Hola, me gustaría pedir estas cestas:\n\n${lines.join("\n")}\n\n¿Están disponibles para entrega hoy?`;
+        window.open(`https://wa.me/34640645343?text=${encodeURIComponent(msg)}`, "_blank");
+    };
+}
 
 // Scroll helper
 function scrollToCatalog() {
-    document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById("catalogo");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 window.scrollToCatalog = scrollToCatalog;
 
@@ -553,175 +684,18 @@ const navMadre = document.getElementById("nav-madre");
 
 function setView(view) {
     currentView = view;
-    navAll.classList.toggle("active", view === "all");
-    navMadre.classList.toggle("active", view === "madre");
-    renderCatalog();
-    document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
-}
-
-navAll.addEventListener("click", () => setView("all"));
-navMadre.addEventListener("click", () => setView("madre"));
-
-// Login popup
-const loginOpenBtn = document.getElementById("login-open");
-const loginModal = document.getElementById("login-modal");
-const loginCloseBtn = document.getElementById("login-close");
-const loginBox = document.getElementById("login-step");
-const editorBox = document.getElementById("editor-step");
-
-loginOpenBtn.onclick = () => {
-    loginModal.style.display = "flex";
-};
-
-loginCloseBtn.onclick = () => {
-    loginModal.style.display = "none";
-};
-
-document.getElementById("logout-btn").onclick = () => {
-    editorBox.style.display = "none";
-    loginBox.style.display = "block";
-};
-
-// Login
-document.getElementById("login-btn").onclick = () => {
-    const phone = document.getElementById("phone").value.trim();
-    const msg = document.getElementById("login-msg");
-    const dict = uiTexts[currentLang];
-
-    if (allowedPhones.includes(phone)) {
-        msg.textContent = "";
-        loginBox.style.display = "none";
-        editorBox.style.display = "block";
-        initEditor();
-    } else {
-        msg.textContent = dict.login_unauthorized;
+    if (navAll && navMadre) {
+        navAll.classList.toggle("active", view === "all");
+        navMadre.classList.toggle("active", view === "madre");
     }
-};
-
-// Editor
-const selectCesta = document.getElementById("select-cesta");
-const nombreEsInput = document.getElementById("cesta-nombre-es");
-const nombreVaInput = document.getElementById("cesta-nombre-va");
-const precioEsInput = document.getElementById("cesta-precio-es");
-const precioVaInput = document.getElementById("cesta-precio-va");
-const imagemInput = document.getElementById("cesta-imagem");
-const fileInput = document.getElementById("cesta-file");
-const itemsEsTextarea = document.getElementById("cesta-items-es");
-const itemsVaTextarea = document.getElementById("cesta-items-va");
-const saveBtn = document.getElementById("save-btn");
-const newBtn = document.getElementById("new-btn");
-
-let currentId = null;
-
-function initEditor() {
-    selectCesta.innerHTML = "";
-    cestas.forEach(c => {
-        const opt = document.createElement("option");
-        opt.value = c.id;
-        opt.textContent = c.nombre.es;
-        selectCesta.appendChild(opt);
-    });
-    if (cestas.length > 0) {
-        currentId = cestas[0].id;
-        loadCesta(currentId);
-    }
-
-    selectCesta.onchange = () => {
-        currentId = selectCesta.value;
-        loadCesta(currentId);
-    };
-
-    saveBtn.onclick = saveCesta;
-    newBtn.onclick = newCesta;
-}
-
-function loadCesta(id) {
-    const c = cestas.find(x => x.id === id);
-    if (!c) return;
-    nombreEsInput.value = c.nombre.es || "";
-    nombreVaInput.value = c.nombre.va || "";
-    precioEsInput.value = c.precio.es || "";
-    precioVaInput.value = c.precio.va || "";
-    imagemInput.value = c.imagem || "";
-    itemsEsTextarea.value = (c.items.es || []).join("\n");
-    itemsVaTextarea.value = (c.items.va || []).join("\n");
-    fileInput.value = "";
-}
-
-// upload de imagem (galeria / câmera / desktop)
-fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        // salva como dataURL na cesta atual
-        if (!currentId) return;
-        const idx = cestas.findIndex(x => x.id === currentId);
-        if (idx === -1) return;
-        cestas[idx].imagem = e.target.result;
-        imagemInput.value = "(imagem carregada da galeria)";
-        localStorage.setItem("mimosyregalos_cestas", JSON.stringify(cestas));
-        renderCatalog();
-    };
-    reader.readAsDataURL(file);
-});
-
-function saveCesta() {
-    if (!currentId) return;
-    const idx = cestas.findIndex(x => x.id === currentId);
-    if (idx === -1) return;
-
-    cestas[idx].nombre.es = nombreEsInput.value.trim() || cestas[idx].nombre.es;
-    cestas[idx].nombre.va = nombreVaInput.value.trim() || cestas[idx].nombre.va;
-    cestas[idx].precio.es = precioEsInput.value.trim() || cestas[idx].precio.es;
-    cestas[idx].precio.va = precioVaInput.value.trim() || cestas[idx].precio.va;
-
-    const url = imagemInput.value.trim();
-    if (url && !url.startsWith("(imagem carregada")) {
-        cestas[idx].imagem = url;
-    }
-
-    cestas[idx].items.es = itemsEsTextarea.value
-        .split("\n")
-        .map(x => x.trim())
-        .filter(x => x.length > 0);
-    cestas[idx].items.va = itemsVaTextarea.value
-        .split("\n")
-        .map(x => x.trim())
-        .filter(x => x.length > 0);
-
-    localStorage.setItem("mimosyregalos_cestas", JSON.stringify(cestas));
     renderCatalog();
-    initEditor();
-    alert("Cesta actualizada.");
+    const el = document.getElementById("catalogo");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
-function newCesta() {
-    const id = "c" + Date.now();
-    const nueva = {
-        id,
-        categoria: "general",
-        imagem: "img/default.jpg",
-        nombre: {
-            es: "Nueva cesta",
-            va: "Nova cistella"
-        },
-        precio: {
-            es: "€0",
-            va: "0 €"
-        },
-        items: {
-            es: ["Producto 1"],
-            va: ["Producte 1"]
-        }
-    };
-    cestas.push(nueva);
-    localStorage.setItem("mimosyregalos_cestas", JSON.stringify(cestas));
-    renderCatalog();
-    initEditor();
-    selectCesta.value = id;
-    currentId = id;
-    loadCesta(id);
+if (navAll && navMadre) {
+    navAll.addEventListener("click", () => setView("all"));
+    navMadre.addEventListener("click", () => setView("madre"));
 }
 
 // Idioma
@@ -746,11 +720,203 @@ if (localStorage.getItem("mimosyregalos_dark") === "true") {
     document.body.classList.add("dark");
 }
 
-darkToggle.onclick = () => {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("mimosyregalos_dark", document.body.classList.contains("dark"));
-};
+if (darkToggle) {
+    darkToggle.onclick = () => {
+        document.body.classList.toggle("dark");
+        localStorage.setItem("mimosyregalos_dark", document.body.classList.contains("dark"));
+    };
+}
 
-// Inicialização
-setView("all");
-updateCartCount();
+/* =========================
+   ADMIN
+   ========================= */
+
+if (document.body.dataset.page === "admin") {
+    const loginBox = document.getElementById("admin-login");
+    const panelBox = document.getElementById("admin-panel");
+    const loginBtn = document.getElementById("login-btn");
+    const logoutBtn = document.getElementById("logout-btn");
+    const loginMsg = document.getElementById("login-msg");
+
+    const selectCesta = document.getElementById("select-cesta");
+    const nombreEsInput = document.getElementById("cesta-nombre-es");
+    const nombrePtInput = document.getElementById("cesta-nombre-pt");
+    const precioEsInput = document.getElementById("cesta-precio-es");
+    const precioPtInput = document.getElementById("cesta-precio-pt");
+    const fraseEsInput = document.getElementById("cesta-frase-es");
+    const frasePtInput = document.getElementById("cesta-frase-pt");
+    const imagemInput = document.getElementById("cesta-imagem");
+    const fileInput = document.getElementById("cesta-file");
+    const itemsEsTextarea = document.getElementById("cesta-items-es");
+    const itemsPtTextarea = document.getElementById("cesta-items-pt");
+    const alergiasInput = document.getElementById("cesta-alergias");
+    const premiumCheckbox = document.getElementById("cesta-premium");
+    const categoriaSelect = document.getElementById("cesta-categoria");
+    const saveBtn = document.getElementById("save-btn");
+    const newBtn = document.getElementById("new-btn");
+
+    let currentId = null;
+
+    if (loginBtn) {
+        loginBtn.onclick = () => {
+            const phone = document.getElementById("phone").value.trim();
+            const dict = uiTexts[currentLang];
+            if (allowedPhones.includes(phone)) {
+                loginMsg.textContent = "";
+                loginBox.style.display = "none";
+                panelBox.style.display = "block";
+                initEditor();
+            } else {
+                loginMsg.textContent = dict.login_unauthorized;
+            }
+        };
+    }
+
+    if (logoutBtn) {
+        logoutBtn.onclick = () => {
+            panelBox.style.display = "none";
+            loginBox.style.display = "block";
+        };
+    }
+
+    function initEditor() {
+        selectCesta.innerHTML = "";
+        cestas.forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c.id;
+            opt.textContent = c.nombre.es;
+            selectCesta.appendChild(opt);
+        });
+        if (cestas.length > 0) {
+            currentId = cestas[0].id;
+            loadCesta(currentId);
+        }
+
+        selectCesta.onchange = () => {
+            currentId = selectCesta.value;
+            loadCesta(currentId);
+        };
+
+        saveBtn.onclick = saveCesta;
+        newBtn.onclick = newCesta;
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (!file || !currentId) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const idx = cestas.findIndex(x => x.id === currentId);
+                if (idx === -1) return;
+                cestas[idx].imagem = e.target.result;
+                imagemInput.value = "(imagem carregada da galeria)";
+                persistCestas();
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function loadCesta(id) {
+        const c = cestas.find(x => x.id === id);
+        if (!c) return;
+        nombreEsInput.value = c.nombre.es || "";
+        nombrePtInput.value = c.nombre.pt || "";
+        precioEsInput.value = c.precio.es || "";
+        precioPtInput.value = c.precio.pt || "";
+        fraseEsInput.value = c.frase.es || "";
+        frasePtInput.value = c.frase.pt || "";
+        imagemInput.value = c.imagem || "";
+        itemsEsTextarea.value = (c.items.es || []).join("\n");
+        itemsPtTextarea.value = (c.items.pt || []).join("\n");
+        alergiasInput.value = (c.alergias || []).join(", ");
+        premiumCheckbox.checked = !!c.premium;
+        categoriaSelect.value = c.categoria || "general";
+        fileInput.value = "";
+    }
+
+    function persistCestas() {
+        localStorage.setItem("mimosyregalos_cestas_v1", JSON.stringify(cestas));
+    }
+
+    function saveCesta() {
+        if (!currentId) return;
+        const idx = cestas.findIndex(x => x.id === currentId);
+        if (idx === -1) return;
+
+        const c = cestas[idx];
+
+        c.nombre.es = nombreEsInput.value.trim() || c.nombre.es;
+        c.nombre.pt = nombrePtInput.value.trim() || c.nombre.pt;
+        c.precio.es = precioEsInput.value.trim() || c.precio.es;
+        c.precio.pt = precioPtInput.value.trim() || c.precio.pt;
+        c.frase.es = fraseEsInput.value.trim() || c.frase.es;
+        c.frase.pt = frasePtInput.value.trim() || c.frase.pt;
+
+        const url = imagemInput.value.trim();
+        if (url && !url.startsWith("(imagem carregada")) {
+            c.imagem = url;
+        }
+
+        c.items.es = itemsEsTextarea.value
+            .split("\n")
+            .map(x => x.trim())
+            .filter(x => x.length > 0);
+        c.items.pt = itemsPtTextarea.value
+            .split("\n")
+            .map(x => x.trim())
+            .filter(x => x.length > 0);
+
+        c.alergias = alergiasInput.value
+            .split(",")
+            .map(x => x.trim())
+            .filter(x => x.length > 0);
+
+        c.premium = premiumCheckbox.checked;
+        c.categoria = categoriaSelect.value || "general";
+
+        persistCestas();
+        alert("Cesta actualizada. Actualiza la página pública para ver los cambios.");
+    }
+
+    function newCesta() {
+        const id = "c" + Date.now();
+        const nueva = {
+            id,
+            categoria: "general",
+            imagem: "img/default.jpg",
+            premium: false,
+            alergias: [],
+            nombre: {
+                es: "Nueva cesta",
+                pt: "Nova cesta"
+            },
+            precio: {
+                es: "€0",
+                pt: "€0"
+            },
+            frase: {
+                es: "Frase destaque",
+                pt: "Frase de destaque"
+            },
+            items: {
+                es: ["Producto 1"],
+                pt: ["Produto 1"]
+            }
+        };
+        cestas.push(nueva);
+        persistCestas();
+        initEditor();
+        selectCesta.value = id;
+        currentId = id;
+        loadCesta(id);
+    }
+}
+
+/* =========================
+   INICIALIZAÇÃO PÚBLICA
+   ========================= */
+
+if (document.body.dataset.page === "public") {
+    setView("all");
+    updateCartCount();
+    renderCatalog();
+}
