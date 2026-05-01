@@ -1,110 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Mimos y Regalos – Cestas Premium</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Mimos y Regalos – Cestas Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO -->
-    <meta name="description" content="Cestas de regalo premium en Valencia. Dulces, románticas y gourmet. Pedidos por WhatsApp.">
+  <!-- SEO -->
+  <meta name="description" content="Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.">
+  <meta name="robots" content="index,follow">
 
-    <!-- OpenGraph -->
-    <meta property="og:title" content="Mimos y Regalos – Cestas Premium">
-    <meta property="og:description" content="Cestas dulces, románticas y gourmet. Pedidos por WhatsApp.">
-    <meta property="og:image" content="img/og-image.jpg">
-    <meta property="og:type" content="website">
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Mimos y Regalos – Cestas Premium">
+  <meta property="og:description" content="Cestas dulces, románticas y gourmet en Valencia. Pedidos por WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/og-image.jpg">
 
-    <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="public">
 
-<!-- TARJA SUPERIOR FIXA E RESPONSIVA -->
-<aside class="up-top-bar">
+  <!-- TARJA SUPERIOR -->
+  <aside class="up-top-bar">
     <div class="up-top-text">
-        <strong>Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.</strong>
+      <strong>Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.</strong>
     </div>
-</aside>
+  </aside>
 
-<!-- HEADER COM LOGO AJUSTADO -->
-<header>
+  <!-- LOGO CENTRAL -->
+  <header>
     <img src="img/logo-mimos.png" alt="Mimos y Regalos" class="logo-img">
-</header>
+  </header>
 
-<!-- MENU SUPERIOR -->
-<div class="top-bar">
+  <!-- MENU SUPERIOR -->
+  <div class="top-bar">
     <nav>
-        <button class="nav-link active" data-view="all" id="nav-all">Catálogo</button>
-        <button class="nav-link" data-view="madre" id="nav-madre">Día de la Madre</button>
+      <button class="nav-link active" data-view="all" id="nav-all">Catálogo</button>
+      <button class="nav-link" data-view="madre" id="nav-madre">Día de la Madre</button>
     </nav>
     <div class="top-right">
-        <div class="idiomas">
-            <button class="lang-btn" data-lang="es">ES</button>
-            <button class="lang-btn" data-lang="pt">PT</button>
-        </div>
-        <button id="dark-toggle" class="icon-btn">🌙</button>
+      <div class="idiomas">
+        <button class="lang-btn" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="pt">PT</button>
+      </div>
+      <button id="dark-toggle" class="icon-btn" aria-label="Alternar modo escuro">🌙</button>
     </div>
-</div>
+  </div>
 
-<main>
-
-<section id="hero">
-    <div class="hero-text">
-        <h1>Mimos y Regalos</h1>
-        <p data-key="hero_subtitle">
-            Cestas de regalo premium en Valencia, pensadas para sorprender con detalles dulces, románticas y gourmet.
-        </p>
-        <button class="primary-btn" onclick="scrollToCatalog()" data-key="hero_cta">
-            Ver cestas disponibles
-        </button>
-    </div>
-</section>
-
-<section id="catalogo" class="section">
-    <div class="section-header">
+  <!-- CATÁLOGO -->
+  <main>
+    <section id="catalogo" class="section">
+      <div class="section-header">
         <h2 data-key="sec_catalogo_title">Cestas de regalo</h2>
         <p class="subtitle" data-key="sec_catalogo_subtitle">
-            Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.
+          Elige la cesta ideal para cumpleaños, aniversarios, sorpresas románticas o un detalle dulce inesperado.
         </p>
-    </div>
+      </div>
 
-    <div id="cards" class="grid"></div>
+      <div id="cards" class="grid"></div>
 
-    <div id="madre-extra" class="madre-extra" style="display:none;">
+      <!-- BLOCO ESPECIAL DIA DAS MÃES -->
+      <div id="madre-extra" class="madre-extra" style="display:none;">
         <h3 data-key="madre_headline">Una sorpresa inolvidable para el Día de la Madre</h3>
-        <p data-key="madre_text_1">Presentación cuidada, productos seleccionados con cariño...</p>
-        <p data-key="madre_text_2">Ideal para entregar en casa...</p>
+        <p data-key="madre_text_1">Presentación cuidada, productos seleccionados con cariño y una experiencia pensada para emocionar.</p>
+        <p data-key="madre_text_2">Ideal para entregar en casa, sorprender en el trabajo o acompañar un almuerzo especial.</p>
         <ul>
-            <li data-key="madre_bullet_1">Edición limitada</li>
-            <li data-key="madre_bullet_2">Productos valencianos</li>
-            <li data-key="madre_bullet_3">Presentación fotogénica</li>
-            <li data-key="madre_bullet_4">Mensaje personalizado</li>
+          <li data-key="madre_bullet_1">Edición limitada con detalles exclusivos</li>
+          <li data-key="madre_bullet_2">Productos valencianos seleccionados</li>
+          <li data-key="madre_bullet_3">Presentación fotogénica para redes sociales</li>
+          <li data-key="madre_bullet_4">Mensaje personalizado para la mamá homenajeada</li>
         </ul>
-    </div>
-</section>
+      </div>
+    </section>
+  </main>
 
-</main>
-
-<footer>
+  <footer>
     © 2026 Mimos y Regalos
-</footer>
+  </footer>
 
-<button id="cart-button" class="cart-button">
+  <!-- BOTÃO CARRINHO -->
+  <button id="cart-button" class="cart-button">
     🧺 <span id="cart-count">0</span>
-</button>
+  </button>
 
-<div id="cart-modal" class="cart-modal">
+  <!-- MODAL CARRINHO -->
+  <div id="cart-modal" class="cart-modal">
     <div class="cart-content">
-        <div class="cart-header">
-            <h3 data-key="cart_title">Tu selección</h3>
-            <button id="cart-close" class="icon-btn">✕</button>
-        </div>
-        <ul id="cart-list"></ul>
-        <button id="cart-whatsapp" class="primary-btn full-width" data-key="cart_whatsapp">
-            Enviar pedido por WhatsApp
-        </button>
+      <div class="cart-header">
+        <h3 data-key="cart_title">Tu selección</h3>
+        <button id="cart-close" class="icon-btn">✕</button>
+      </div>
+      <ul id="cart-list"></ul>
+      <button id="cart-whatsapp" class="primary-btn full-width" data-key="cart_whatsapp">
+        Enviar pedido por WhatsApp
+      </button>
     </div>
-</div>
+  </div>
 
-<script src="script.js"></script>
+  <!-- MODAL DETALHES -->
+  <div id="details-modal" class="cart-modal">
+    <div class="cart-content details-content">
+      <div class="cart-header">
+        <h3 id="details-title"></h3>
+        <button id="details-close" class="icon-btn">✕</button>
+      </div>
+      <p id="details-price" class="details-price"></p>
+      <p id="details-phrase"></p>
+      <ul id="details-items" class="details-items"></ul>
+
+      <div class="details-allergies">
+        <span id="details-allergy-text" class="small"></span>
+        <div id="details-allergies"></div>
+      </div>
+
+      <div class="details-actions">
+        <button id="details-whatsapp" class="primary-btn full-width">
+          Fazer pedido pelo WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
