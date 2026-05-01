@@ -81,9 +81,11 @@ nav {
 .idiomas button {
     border: none;
     background: none;
-    font-size: 16px;
+    font-size: 13px;
     cursor: pointer;
     padding: 4px 6px;
+    font-weight: 600;
+    color: var(--text-soft);
 }
 
 .icon-btn {
@@ -92,17 +94,6 @@ nav {
     font-size: 18px;
     cursor: pointer;
     padding: 4px 6px;
-}
-
-.pill-btn {
-    border-radius: 999px;
-    border: none;
-    padding: 7px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    background: var(--primary);
-    color: #fff;
 }
 
 /* HERO */
@@ -191,31 +182,56 @@ nav {
     }
 }
 
+/* Card com giro */
+
 .card {
-    background: var(--card-bg);
+    perspective: 1000px;
+    height: 280px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
     border-radius: var(--radius);
     border: 1px solid var(--border-soft);
     box-shadow: var(--shadow-soft);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    animation: fadeInUp 0.4s ease forwards;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    background: var(--card-bg);
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+.card-inner.flipped {
+    transform: rotateY(180deg);
 }
+
+.card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-front {
+    background: var(--card-bg);
+}
+
+.card-back {
+    background: var(--card-bg);
+    transform: rotateY(180deg);
+    padding: 14px;
+}
+
+/* Frente */
 
 .card-img-wrapper {
     width: 100%;
-    height: 230px;
-    border-radius: var(--radius);
+    height: 210px;
     overflow: hidden;
-    margin-bottom: 12px;
     background: #f2e3e7;
     display: flex;
     align-items: center;
@@ -228,6 +244,15 @@ nav {
     object-fit: cover;
 }
 
+.card-front-title {
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Verso */
+
 .card-title {
     font-size: 17px;
     font-weight: 700;
@@ -238,25 +263,20 @@ nav {
 .card-price {
     font-size: 14px;
     color: var(--text-soft);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
-.card-items {
-    font-size: 14px;
-    margin-bottom: 12px;
-    padding-left: 20px;
+.card-phrase {
+    font-size: 13px;
+    color: var(--text-main);
+    margin-bottom: 10px;
 }
 
 .card-actions {
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-top: auto;
-}
-
-.btn-whatsapp {
-    background: var(--whatsapp);
-    color: #fff;
 }
 
 .btn-cart {
@@ -347,7 +367,7 @@ footer {
     border-radius: var(--radius);
     padding: 16px;
     width: 90%;
-    max-width: 380px;
+    max-width: 420px;
     box-shadow: var(--shadow-soft);
     animation: fadeInScale 0.25s ease;
 }
@@ -375,36 +395,52 @@ footer {
     width: 100%;
 }
 
-/* LOGIN / OVERLAY */
+/* POPUP DETALHES */
 
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
+.details-content {
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.overlay-content {
-    background: var(--card-bg);
-    border-radius: 18px;
-    padding: 18px;
-    width: 95%;
-    max-width: 520px;
-    box-shadow: var(--shadow-soft);
+.details-price {
+    font-size: 14px;
+    color: var(--text-soft);
+    margin: 0 0 4px;
 }
 
-.panel-row {
+.details-phrase {
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+
+.details-items {
+    font-size: 14px;
+    margin: 0 0 10px;
+    padding-left: 20px;
+}
+
+.details-allergies {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
-.panel-col {
-    flex: 1 1 180px;
+.allergy-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #ffe4e4;
+    color: #a33;
 }
+
+.details-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+/* LOGIN / ADMIN */
 
 label {
     display: block;
@@ -425,6 +461,16 @@ input, textarea, select {
 textarea {
     min-height: 80px;
     resize: vertical;
+}
+
+.panel-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.panel-col {
+    flex: 1 1 180px;
 }
 
 .editor-header {
@@ -457,13 +503,6 @@ body.dark {
 }
 
 /* ANIMAÇÕES */
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 @keyframes fadeInScale {
     from {
