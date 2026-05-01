@@ -40,6 +40,18 @@ header {
     object-fit: cover;
 }
 
+/* UP TOP BAR */
+.up-top-bar {
+    width: 100%;
+    background: #da1b28;
+    color: #fff;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    box-sizing: border-box;
+}
+
 /* TOP BAR */
 
 .top-bar {
