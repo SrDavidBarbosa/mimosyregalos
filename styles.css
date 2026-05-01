@@ -52,6 +52,15 @@ header {
     box-sizing: border-box;
 }
 
+.up-top-bar div {
+    float: left;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    font-family: 'Montserrat' !important;
+    text-align: center;
+}
+
 /* TOP BAR */
 
 .top-bar {
