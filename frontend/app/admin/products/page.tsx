@@ -1,40 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useWizard } from '@/hooks/useWizard';
+import { CategoryCard } from '@/components/CategoryCard';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
-type ImageState = string[];
-
 export default function AdminProductsPage() {
-  const [images, setImages] = useState<ImageState>([]);
-  const [status, setStatus] = useState<string>('');
+  const { step, next, back, isMobile } = useWizard();
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Campos do produto
+  const [name_es, setNameEs] = useState('');
+  const [shortDescription_es, setShortDescriptionEs] = useState('');
+  const [phrase_es, setPhraseEs] = useState('');
+  const [items_es, setItemsEs] = useState('[]');
+  const [price, setPrice] = useState('');
+  const [isPremium, setIsPremium] = useState(false);
+  const [isMothersDaySpecial, setIsMothersDaySpecial] = useState(false);
+
+  // Buscar categorias
+  useEffect(() => {
+    fetch(`${API_BASE}/categories`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch(() => setStatus('Erro ao carregar categorias'));
+  }, []);
+
+  // Toggle categoria
+  function toggleCategory(id: number) {
+    setSelectedCategories((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  }
+
+  // Upload de imagem
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
-      setStatus('Gerando URL segura para upload...');
+      setStatus('Gerando URL segura...');
       const res = await fetch(`${API_BASE}/upload/signed-url`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contentType: file.type }),
       });
 
-      if (!res.ok) throw new Error('Falha ao obter signed URL');
-
       const { uploadUrl, fileUrl } = await res.json();
 
       setStatus('Enviando imagem...');
-      const uploadRes = await fetch(uploadUrl, {
+      await fetch(uploadUrl, {
         method: 'PUT',
         headers: { 'Content-Type': file.type },
         body: file,
       });
-
-      if (!uploadRes.ok) throw new Error('Falha no upload para R2');
 
       setImages((prev) => [...prev, fileUrl]);
       setStatus('Imagem enviada com sucesso.');
@@ -46,47 +71,28 @@ export default function AdminProductsPage() {
     }
   }
 
+  // Remover imagem
   function removeImage(idx: number) {
     setImages((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
+  // Salvar produto
+  async function saveProduct() {
     try {
       setLoading(true);
       setStatus('Salvando produto...');
 
-      const price = parseFloat((formData.get('price') as string) || '0');
-      const priceCents = Math.round(price * 100);
+      const priceCents = Math.round(parseFloat(price || '0') * 100);
 
       const payload = {
-        slug: (formData.get('slug') as string).trim(),
-        category: (formData.get('category') as string).trim(),
-        tags: ((formData.get('tags') as string) || '').trim() || null,
+        categoryIds: selectedCategories,
         priceCents,
-
-        name_es: (formData.get('name_es') as string).trim(),
-        name_pt: (formData.get('name_pt') as string).trim(),
-        name_en: (formData.get('name_en') as string).trim(),
-
-        shortDescription_es: (formData.get('shortDescription_es') as string).trim(),
-        shortDescription_pt: (formData.get('shortDescription_pt') as string).trim(),
-        shortDescription_en: (formData.get('shortDescription_en') as string).trim(),
-
-        phrase_es: (formData.get('phrase_es') as string).trim(),
-        phrase_pt: (formData.get('phrase_pt') as string).trim(),
-        phrase_en: (formData.get('phrase_en') as string).trim(),
-
-        items_es: JSON.parse((formData.get('items_es') as string) || '[]'),
-        items_pt: JSON.parse((formData.get('items_pt') as string) || '[]'),
-        items_en: [],
-
-        isPremium: formData.get('isPremium') === 'on',
-        isMothersDaySpecial: formData.get('isMothersDaySpecial') === 'on',
-
+        name_es,
+        shortDescription_es,
+        phrase_es,
+        items_es: JSON.parse(items_es || '[]'),
+        isPremium,
+        isMothersDaySpecial,
         images,
       };
 
@@ -99,8 +105,6 @@ export default function AdminProductsPage() {
       if (!res.ok) throw new Error('Erro ao salvar produto');
 
       setStatus('Produto salvo com sucesso.');
-      form.reset();
-      setImages([]);
     } catch (err) {
       console.error(err);
       setStatus('Erro ao salvar produto.');
@@ -109,249 +113,302 @@ export default function AdminProductsPage() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-50 via-slate-50 to-slate-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-6xl grid gap-6 md:grid-cols-[1.5fr,1fr]">
-        {/* Form */}
-        <section className="rounded-3xl bg-white/90 backdrop-blur shadow-xl border border-pink-100 p-6 md:p-8">
-          <header className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-                Mimos y Regalos – Produtos
-              </h1>
-              <p className="text-xs text-slate-500">
-                Cadastro de produtos com upload de imagens (Cloudflare R2).
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-1 rounded-full border border-pink-100 bg-pink-50 px-3 py-1 text-[11px] text-pink-700">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              Admin
-            </span>
-          </header>
+  // -------------------------
+  // WIZARD (MOBILE)
+  // -------------------------
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Slug</label>
-                <input
-                  name="slug"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                  placeholder="cesta-amor"
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-pink-50 via-slate-50 to-slate-100 p-4">
+        <h1 className="text-xl font-semibold mb-4">Novo Produto</h1>
+
+        {step === 1 && (
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Categorias</h2>
+            <div className="grid grid-cols-1 gap-3">
+              {categories.map((cat: any) => (
+                <CategoryCard
+                  key={cat.id}
+                  category={cat}
+                  selected={selectedCategories.includes(cat.id)}
+                  onToggle={toggleCategory}
                 />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Categoria</label>
-                <input
-                  name="category"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                  placeholder="romantica"
-                />
-              </div>
+              ))}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Preço (EUR)</label>
-                <input
-                  name="price"
-                  type="number"
-                  step="0.01"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                  placeholder="29.99"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Tags</label>
-                <input
-                  name="tags"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                  placeholder="romântico, dia-das-mães"
-                />
-              </div>
-            </div>
+            <button
+              onClick={next}
+              disabled={selectedCategories.length === 0}
+              className="w-full mt-6 bg-pink-600 text-white py-2 rounded-xl disabled:opacity-50"
+            >
+              Próximo
+            </button>
+          </div>
+        )}
 
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Nome (ES)</label>
-                <input
-                  name="name_es"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Nome (PT)</label>
-                <input
-                  name="name_pt"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Nome (EN)</label>
-                <input
-                  name="name_en"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-            </div>
+        {step === 2 && (
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Informações básicas</h2>
 
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Frase (ES)</label>
-                <input
-                  name="phrase_es"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Frase (PT)</label>
-                <input
-                  name="phrase_pt"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Frase (EN)</label>
-                <input
-                  name="phrase_en"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-            </div>
+            <input
+              value={name_es}
+              onChange={(e) => setNameEs(e.target.value)}
+              placeholder="Nome (ES)"
+              className="w-full border rounded-xl px-3 py-2"
+            />
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Descrição curta (ES)
-                </label>
-                <textarea
-                  name="shortDescription_es"
-                  rows={2}
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Descrição curta (PT)
-                </label>
-                <textarea
-                  name="shortDescription_pt"
-                  rows={2}
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-            </div>
+            <textarea
+              value={shortDescription_es}
+              onChange={(e) => setShortDescriptionEs(e.target.value)}
+              placeholder="Descrição curta (ES)"
+              className="w-full border rounded-xl px-3 py-2"
+            />
 
-            <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">
-                Descrição curta (EN)
-              </label>
-              <textarea
-                name="shortDescription_en"
-                rows={2}
-                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
-              />
-            </div>
+            <textarea
+              value={phrase_es}
+              onChange={(e) => setPhraseEs(e.target.value)}
+              placeholder="Frase (ES)"
+              className="w-full border rounded-xl px-3 py-2"
+            />
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Itens (ES) – JSON
-                </label>
-                <textarea
-                  name="items_es"
-                  rows={2}
-                  defaultValue="[]"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Itens (PT) – JSON
-                </label>
-                <textarea
-                  name="items_pt"
-                  rows={2}
-                  defaultValue="[]"
-                  className="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-pink-300"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <label className="inline-flex items-center gap-2 text-xs text-slate-700">
-                <input
-                  name="isPremium"
-                  type="checkbox"
-                  className="rounded border-slate-300 text-pink-500 focus:ring-pink-400"
-                />
-                Produto premium
-              </label>
-              <label className="inline-flex items-center gap-2 text-xs text-slate-700">
-                <input
-                  name="isMothersDaySpecial"
-                  type="checkbox"
-                  className="rounded border-slate-300 text-pink-500 focus:ring-pink-400"
-                />
-                Especial Dia das Mães
-              </label>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-              <span className="text-xs text-slate-500">{status}</span>
-              <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex items-center gap-2 rounded-2xl bg-pink-600 px-4 py-2 text-sm font-medium text-white shadow-md shadow-pink-200 hover:bg-pink-700 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed transition"
-              >
-                {loading ? 'Salvando...' : 'Salvar produto'}
+            <div className="flex justify-between mt-6">
+              <button onClick={back} className="px-4 py-2 rounded-xl bg-slate-200">
+                Voltar
+              </button>
+              <button onClick={next} className="px-4 py-2 rounded-xl bg-pink-600 text-white">
+                Próximo
               </button>
             </div>
-          </form>
-        </section>
+          </div>
+        )}
 
-        {/* Upload / Preview */}
-        <aside className="rounded-3xl bg-white/90 backdrop-blur shadow-xl border border-pink-100 p-6 md:p-7 flex flex-col gap-4">
+        {step === 3 && (
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Itens (ES)</h2>
+
+            <textarea
+              value={items_es}
+              onChange={(e) => setItemsEs(e.target.value)}
+              className="w-full border rounded-xl px-3 py-2 font-mono text-xs"
+            />
+
+            <div className="flex justify-between mt-6">
+              <button onClick={back} className="px-4 py-2 rounded-xl bg-slate-200">
+                Voltar
+              </button>
+              <button onClick={next} className="px-4 py-2 rounded-xl bg-pink-600 text-white">
+                Próximo
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Preço e Flags</h2>
+
+            <input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Preço (EUR)"
+              type="number"
+              step="0.01"
+              className="w-full border rounded-xl px-3 py-2"
+            />
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={isPremium}
+                onChange={(e) => setIsPremium(e.target.checked)}
+              />
+              Produto Premium
+            </label>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={isMothersDaySpecial}
+                onChange={(e) => setIsMothersDaySpecial(e.target.checked)}
+              />
+              Especial Dia das Mães
+            </label>
+
+            <div className="flex justify-between mt-6">
+              <button onClick={back} className="px-4 py-2 rounded-xl bg-slate-200">
+                Voltar
+              </button>
+              <button onClick={next} className="px-4 py-2 rounded-xl bg-pink-600 text-white">
+                Próximo
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold">Imagens</h2>
+
+            <label className="block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer">
+              <span className="text-sm text-pink-700">Enviar imagem</span>
+              <input type="file" className="hidden" onChange={handleFileChange} />
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+              {images.map((url, idx) => (
+                <div key={idx} className="relative">
+                  <img src={url} className="w-full h-28 object-cover rounded-xl" />
+                  <button
+                    onClick={() => removeImage(idx)}
+                    className="absolute top-1 right-1 bg-white/80 text-xs px-2 py-1 rounded-full"
+                  >
+                    remover
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between mt-6">
+              <button onClick={back} className="px-4 py-2 rounded-xl bg-slate-200">
+                Voltar
+              </button>
+              <button
+                onClick={saveProduct}
+                disabled={loading}
+                className="px-4 py-2 rounded-xl bg-pink-600 text-white disabled:opacity-50"
+              >
+                {loading ? 'Salvando...' : 'Salvar'}
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-500 mt-2">{status}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // -------------------------
+  // DESKTOP (form completo)
+  // -------------------------
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-pink-50 via-slate-50 to-slate-100 p-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-[1.5fr,1fr] gap-6">
+        {/* Form */}
+        <section className="bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-pink-100 space-y-6">
+          <h1 className="text-2xl font-semibold">Novo Produto</h1>
+
+          {/* Categorias */}
           <div>
-            <h2 className="text-sm font-semibold text-slate-800">Imagens do produto</h2>
-            <p className="text-xs text-slate-500">
-              Compatível com PC, iPhone e Android. Use câmera ou galeria.
-            </p>
+            <h2 className="text-sm font-semibold mb-2">Categorias</h2>
+            <div className="grid grid-cols-3 gap-3">
+              {categories.map((cat: any) => (
+                <CategoryCard
+                  key={cat.id}
+                  category={cat}
+                  selected={selectedCategories.includes(cat.id)}
+                  onToggle={toggleCategory}
+                />
+              ))}
+            </div>
           </div>
 
-          <label className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-pink-200 px-4 py-6 text-center text-xs text-slate-600 cursor-pointer hover:border-pink-400 hover:bg-pink-50/60 transition">
-            <span className="font-medium text-pink-700">
-              Clique para selecionar ou tirar foto
-            </span>
-            <span className="text-[10px] text-slate-400">PNG, JPG, até ~10MB</span>
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              className="hidden"
-              onChange={handleFileChange}
-            />
+          {/* Nome */}
+          <input
+            value={name_es}
+            onChange={(e) => setNameEs(e.target.value)}
+            placeholder="Nome (ES)"
+            className="w-full border rounded-xl px-3 py-2"
+          />
+
+          {/* Descrição */}
+          <textarea
+            value={shortDescription_es}
+            onChange={(e) => setShortDescriptionEs(e.target.value)}
+            placeholder="Descrição curta (ES)"
+            className="w-full border rounded-xl px-3 py-2"
+          />
+
+          {/* Frase */}
+          <textarea
+            value={phrase_es}
+            onChange={(e) => setPhraseEs(e.target.value)}
+            placeholder="Frase (ES)"
+            className="w-full border rounded-xl px-3 py-2"
+          />
+
+          {/* Itens */}
+          <textarea
+            value={items_es}
+            onChange={(e) => setItemsEs(e.target.value)}
+            className="w-full border rounded-xl px-3 py-2 font-mono text-xs"
+            placeholder='["Chocolate", "Vinho", "Flores"]'
+          />
+
+          {/* Preço */}
+          <input
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Preço (EUR)"
+            type="number"
+            step="0.01"
+            className="w-full border rounded-xl px-3 py-2"
+          />
+
+          {/* Flags */}
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={isPremium}
+                onChange={(e) => setIsPremium(e.target.checked)}
+              />
+              Premium
+            </label>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={isMothersDaySpecial}
+                onChange={(e) => setIsMothersDaySpecial(e.target.checked)}
+              />
+              Dia das Mães
+            </label>
+          </div>
+
+          <button
+            onClick={saveProduct}
+            disabled={loading}
+            className="bg-pink-600 text-white px-4 py-2 rounded-xl disabled:opacity-50"
+          >
+            {loading ? 'Salvando...' : 'Salvar produto'}
+          </button>
+
+          <p className="text-xs text-slate-500">{status}</p>
+        </section>
+
+        {/* Upload */}
+        <aside className="bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-pink-100 space-y-4">
+          <h2 className="text-sm font-semibold">Imagens</h2>
+
+          <label className="block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer">
+            <span className="text-sm text-pink-700">Enviar imagem</span>
+            <input type="file" className="hidden" onChange={handleFileChange} />
           </label>
 
-          <div className="grid grid-cols-2 gap-3 max-h-64 overflow-auto">
+          <div className="grid grid-cols-2 gap-3">
             {images.map((url, idx) => (
-              <div
-                key={url}
-                className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-50"
-              >
-                <img src={url} className="w-full h-28 object-cover" />
+              <div key={idx} className="relative">
+                <img src={url} className="w-full h-28 object-cover rounded-xl" />
                 <button
-                  type="button"
                   onClick={() => removeImage(idx)}
-                  className="absolute top-1 right-1 rounded-full bg-white/80 px-2 py-0.5 text-[10px] text-red-600 shadow-sm opacity-0 group-hover:opacity-100 transition"
+                  className="absolute top-1 right-1 bg-white/80 text-xs px-2 py-1 rounded-full"
                 >
                   remover
                 </button>
               </div>
             ))}
-          </div>
-
-          <div className="mt-auto text-[11px] text-slate-400">
-            As imagens são enviadas direto para o Cloudflare R2. O backend só recebe as URLs.
           </div>
         </aside>
       </div>
