@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useCart } from '@/hooks/useCart';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
 export default function ProdutoPage({ params }) {
   const { slug } = params;
   const [product, setProduct] = useState(null);
+
+  const { addToCart } = useCart();
 
   useEffect(() => {
     fetch(`${API_BASE}/products?slug=${slug}`)
@@ -19,7 +22,8 @@ export default function ProdutoPage({ params }) {
   return (
     <div className="px-6 py-10 max-w-4xl mx-auto">
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Imagem */}
+        
+        {/* Imagens */}
         <div className="space-y-3">
           {product.images?.map((url: string, i: number) => (
             <img
@@ -38,7 +42,7 @@ export default function ProdutoPage({ params }) {
 
           <p className="text-pink-700 italic">{product.phrase_es}</p>
 
-          <h3 className="font-medium mt-4">Inclui:</h3>
+          <h3 className="font-medium mt-4">Incluye:</h3>
           <ul className="list-disc pl-6 text-slate-600">
             {product.items_es.map((item: string, i: number) => (
               <li key={i}>{item}</li>
@@ -49,10 +53,7 @@ export default function ProdutoPage({ params }) {
             {(product.priceCents / 100).toFixed(2)} €
           </p>
 
-          import { useCart } from '@/hooks/useCart';
-
-          const { addToCart } = useCart();
-
+          {/* Botão de adicionar ao carrinho */}
           <button
             onClick={() =>
               addToCart({
@@ -60,19 +61,19 @@ export default function ProdutoPage({ params }) {
                 name: product.name_es,
                 priceCents: product.priceCents,
                 image: product.images?.[0],
-              });
+              })
             }
             className="w-full bg-pink-600 text-white py-3 rounded-xl shadow hover:bg-pink-700"
           >
-            Adicionar ao carrinho
+            Añadir al carrito
           </button>
 
-
+          {/* Botão WhatsApp */}
           <a
-            href={`https://wa.me/34XXXXXXXXX?text=Quero%20o%20produto%20${product.name_es}`}
+            href={`https://wa.me/34XXXXXXXXX?text=Quiero%20el%20producto%20${product.name_es}`}
             className="block w-full text-center bg-green-600 text-white py-3 rounded-xl shadow hover:bg-green-700"
           >
-            Comprar pelo WhatsApp
+            Comprar por WhatsApp
           </a>
         </div>
       </div>
