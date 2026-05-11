@@ -2,10 +2,10 @@ import './globals.css';
 
 export const metadata = {
   title: 'Mimos y Regalos',
-  description: 'Cestas e presentes personalizados',
+  description: 'Cestas y regalos personalizados',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className="bg-slate-50 text-slate-800">
@@ -15,15 +15,15 @@ export default function RootLayout({ children }) {
           </a>
 
           <nav className="flex items-center gap-4 text-sm">
-            <a href="/catalogo" className="hover:text-pink-600">Catálogo</a>
-            <a href="/carrinho" className="hover:text-pink-600">Carrinho</a>
+            <a href="/catalog" className="hover:text-pink-600">Catálogo</a>
+            <a href="/cart" className="hover:text-pink-600">Carrito</a>
           </nav>
         </header>
 
         <main className="min-h-screen">{children}</main>
 
         <footer className="bg-white border-t border-pink-100 text-center py-6 text-sm text-slate-500">
-          © {new Date().getFullYear()} Mimos y Regalos — Feito com carinho
+          © {new Date().getFullYear()} Mimos y Regalos — Hecho con cariño
         </footer>
       </body>
     </html>
