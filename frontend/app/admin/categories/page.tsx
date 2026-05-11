@@ -126,7 +126,7 @@ export default function CategoriesPage() {
 
           <input
             value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
+            onChange={(e) => setSortOrder(Number(e.target.value))}
             type="number"
             placeholder="Ordem"
             className="w-full border rounded-xl px-3 py-2"
