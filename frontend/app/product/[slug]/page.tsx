@@ -59,8 +59,8 @@ export default function ProdutoPage({ params }) {
                 id: product.id,
                 name: product.name_es,
                 priceCents: product.priceCents,
-                image: product.images[0],
-              })
+                image: product.images?.[0],
+              });
             }
             className="w-full bg-pink-600 text-white py-3 rounded-xl shadow hover:bg-pink-700"
           >
