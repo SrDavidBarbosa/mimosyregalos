@@ -167,7 +167,7 @@ export default function EditProductPage() {
                   key={cat.id}
                   category={cat}
                   selected={selectedCategories.includes(cat.id)}
-                  onToggle={toggleCategory}
+                  onToggle={() => toggleCategory(cat.id)}
                 />
               ))}
             </div>
