@@ -4,11 +4,11 @@ import React, { useEffect, useState } from 'react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
-export default function CategoryPage({ params }) {
+export default function CategoryPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  const [category, setCategory] = useState(null);
-  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState<any>(null);
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     async function load() {
@@ -41,7 +41,7 @@ export default function CategoryPage({ params }) {
       )}
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {products.map((p: any) => (
+        {products.map((p) => (
           <a
             key={p.id}
             href={`/product/${p.slug}`}
