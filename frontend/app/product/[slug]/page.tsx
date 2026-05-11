@@ -5,10 +5,14 @@ import { useCart } from '@/hooks/useCart';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
-export default function ProdutoPage({ params }) {
-  const { slug } = params;
-  const [product, setProduct] = useState(null);
+export default async function ProdutoPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
+  const [product, setProduct] = useState<any>(null);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -17,13 +21,13 @@ export default function ProdutoPage({ params }) {
       .then((data) => setProduct(data[0]));
   }, [slug]);
 
-  if (!product) return <div className="p-8">Carregando...</div>;
+  if (!product) return <div className="p-8">Cargando...</div>;
 
   return (
     <div className="px-6 py-10 max-w-4xl mx-auto">
       <div className="grid md:grid-cols-2 gap-8">
         
-        {/* Imagens */}
+        {/* Imágenes */}
         <div className="space-y-3">
           {product.images?.map((url: string, i: number) => (
             <img
@@ -34,7 +38,7 @@ export default function ProdutoPage({ params }) {
           ))}
         </div>
 
-        {/* Conteúdo */}
+        {/* Contenido */}
         <div className="space-y-4">
           <h1 className="text-3xl font-semibold">{product.name_es}</h1>
 
@@ -53,7 +57,7 @@ export default function ProdutoPage({ params }) {
             {(product.priceCents / 100).toFixed(2)} €
           </p>
 
-          {/* Botão de adicionar ao carrinho */}
+          {/* Botón de añadir al carrito */}
           <button
             onClick={() =>
               addToCart({
@@ -68,7 +72,7 @@ export default function ProdutoPage({ params }) {
             Añadir al carrito
           </button>
 
-          {/* Botão WhatsApp */}
+          {/* Botón WhatsApp */}
           <a
             href={`https://wa.me/34XXXXXXXXX?text=Quiero%20el%20producto%20${product.name_es}`}
             className="block w-full text-center bg-green-600 text-white py-3 rounded-xl shadow hover:bg-green-700"
