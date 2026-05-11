@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 
+export interface CartItem {
+  id: number;
+  name: string;
+  priceCents: number;
+  image?: string;
+  qty: number;
+}
+
 export function useCart() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   // Carregar do localStorage
   useEffect(() => {
@@ -14,7 +22,7 @@ export function useCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  function addToCart(product) {
+  function addToCart(product: Omit<CartItem, 'qty'>) {
     setCart((prev) => {
       const exists = prev.find((p) => p.id === product.id);
       if (exists) {
@@ -26,11 +34,11 @@ export function useCart() {
     });
   }
 
-  function removeFromCart(id) {
+  function removeFromCart(id: number) {
     setCart((prev) => prev.filter((p) => p.id !== id));
   }
 
-  function updateQty(id, qty) {
+  function updateQty(id: number, qty: number) {
     setCart((prev) =>
       prev.map((p) => (p.id === id ? { ...p, qty } : p))
     );
