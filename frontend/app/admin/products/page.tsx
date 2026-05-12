@@ -373,7 +373,7 @@ export default function AdminProductsPage() {
                 checked={isMothersDaySpecial}
                 onChange={(e) => setIsMothersDaySpecial(e.target.checked)}
               />
-              Dia das Mães
+              Dia de La Madres
             </label>
           </div>
 
