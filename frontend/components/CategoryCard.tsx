@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface Category {
-  id: number;
-  slug: string;
-  name_es: string;
-  icon?: string;
-}
+import type { Category } from '@/types/category';
 
 interface CategoryCardProps {
   category: Category;

@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
 
-export function useWizard() {
+interface UseWizardResult {
+  step: number;
+  next: () => void;
+  back: () => void;
+  isMobile: boolean;
+}
+
+export function useWizard(): UseWizardResult {
   const [step, setStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -12,7 +19,7 @@ export function useWizard() {
   }, []);
 
   const next = () => setStep((s) => s + 1);
-  const back = () => setStep((s) => s - 1);
+  const back = () => setStep((s) => (s > 1 ? s - 1 : s));
 
   return { step, next, back, isMobile };
 }

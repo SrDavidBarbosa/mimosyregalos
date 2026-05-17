@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { useWizard } from '@/hooks/useWizard';
 import { CategoryCard } from '@/components/CategoryCard';
+import type { Category } from '@/types/category';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
 export default function AdminProductsPage() {
   const { step, next, back, isMobile } = useWizard();
 
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [status, setStatus] = useState('');
@@ -28,18 +29,16 @@ export default function AdminProductsPage() {
   useEffect(() => {
     fetch(`${API_BASE}/categories`)
       .then((res) => res.json())
-      .then((data) => setCategories(data))
+      .then((data: Category[]) => setCategories(data))
       .catch(() => setStatus('Erro ao carregar categorias'));
   }, []);
 
-  // Toggle categoria
   function toggleCategory(id: number) {
     setSelectedCategories((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   }
 
-  // Upload de imagem
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -71,12 +70,10 @@ export default function AdminProductsPage() {
     }
   }
 
-  // Remover imagem
   function removeImage(idx: number) {
     setImages((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  // Salvar produto
   async function saveProduct() {
     try {
       setLoading(true);
@@ -114,9 +111,8 @@ export default function AdminProductsPage() {
   }
 
   // -------------------------
-  // WIZARD (MOBILE)
+  // MOBILE
   // -------------------------
-
   if (isMobile) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-pink-50 via-slate-50 to-slate-100 p-4">
@@ -126,7 +122,7 @@ export default function AdminProductsPage() {
           <div className="space-y-4">
             <h2 className="text-sm font-semibold">Categorias</h2>
             <div className="grid grid-cols-1 gap-3">
-              {categories.map((cat: any) => (
+              {categories.map((cat) => (
                 <CategoryCard
                   key={cat.id}
                   category={cat}
@@ -289,21 +285,18 @@ export default function AdminProductsPage() {
   }
 
   // -------------------------
-  // DESKTOP (form completo)
+  // DESKTOP
   // -------------------------
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 via-slate-50 to-slate-100 p-8">
       <div className="max-w-6xl mx-auto grid grid-cols-[1.5fr,1fr] gap-6">
-        {/* Form */}
         <section className="bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-pink-100 space-y-6">
           <h1 className="text-2xl font-semibold">Novo Produto</h1>
 
-          {/* Categorias */}
           <div>
             <h2 className="text-sm font-semibold mb-2">Categorias</h2>
             <div className="grid grid-cols-3 gap-3">
-              {categories.map((cat: any) => (
+              {categories.map((cat) => (
                 <CategoryCard
                   key={cat.id}
                   category={cat}
@@ -314,7 +307,6 @@ export default function AdminProductsPage() {
             </div>
           </div>
 
-          {/* Nome */}
           <input
             value={name_es}
             onChange={(e) => setNameEs(e.target.value)}
@@ -322,7 +314,6 @@ export default function AdminProductsPage() {
             className="w-full border rounded-xl px-3 py-2"
           />
 
-          {/* Descrição */}
           <textarea
             value={shortDescription_es}
             onChange={(e) => setShortDescriptionEs(e.target.value)}
@@ -330,7 +321,6 @@ export default function AdminProductsPage() {
             className="w-full border rounded-xl px-3 py-2"
           />
 
-          {/* Frase */}
           <textarea
             value={phrase_es}
             onChange={(e) => setPhraseEs(e.target.value)}
@@ -338,7 +328,6 @@ export default function AdminProductsPage() {
             className="w-full border rounded-xl px-3 py-2"
           />
 
-          {/* Itens */}
           <textarea
             value={items_es}
             onChange={(e) => setItemsEs(e.target.value)}
@@ -346,7 +335,6 @@ export default function AdminProductsPage() {
             placeholder='["Chocolate", "Vinho", "Flores"]'
           />
 
-          {/* Preço */}
           <input
             value={price}
             onChange={(e) => setPrice(e.target.value)}
@@ -356,7 +344,6 @@ export default function AdminProductsPage() {
             className="w-full border rounded-xl px-3 py-2"
           />
 
-          {/* Flags */}
           <div className="flex gap-6">
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -388,7 +375,6 @@ export default function AdminProductsPage() {
           <p className="text-xs text-slate-500">{status}</p>
         </section>
 
-        {/* Upload */}
         <aside className="bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-pink-100 space-y-4">
           <h2 className="text-sm font-semibold">Imagens</h2>
 

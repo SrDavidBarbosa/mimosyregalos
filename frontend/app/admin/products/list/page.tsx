@@ -2,17 +2,32 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type { Category } from '@/types/category';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE!;
 
+interface ProductCategoryWithCategory {
+  category: Category;
+}
+
+interface ProductListItem {
+  id: number;
+  name_es: string;
+  priceCents: number;
+  images: string[];
+  isPremium: boolean;
+  isMothersDaySpecial: boolean;
+  categories: ProductCategoryWithCategory[];
+}
+
 export default function ProductsListPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductListItem[]>([]);
   const [status, setStatus] = useState('');
 
   async function loadProducts() {
     try {
       const res = await fetch(`${API_BASE}/products`);
-      const data = await res.json();
+      const data: ProductListItem[] = await res.json();
       setProducts(data);
     } catch (err) {
       console.error(err);
@@ -21,7 +36,7 @@ export default function ProductsListPage() {
   }
 
   useEffect(() => {
-    loadProducts();
+    void loadProducts();
   }, []);
 
   async function deleteProduct(id: number) {
@@ -36,7 +51,7 @@ export default function ProductsListPage() {
       if (!res.ok) throw new Error('Erro ao excluir produto');
 
       setStatus('Produto excluído.');
-      loadProducts();
+      void loadProducts();
     } catch (err) {
       console.error(err);
       setStatus('Erro ao excluir produto.');
@@ -48,7 +63,6 @@ export default function ProductsListPage() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Produtos</h1>
-
           <Link
             href="/admin/products"
             className="bg-pink-600 text-white px-4 py-2 rounded-xl"
@@ -60,7 +74,7 @@ export default function ProductsListPage() {
         <p className="text-xs text-slate-500">{status}</p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product: any) => (
+          {products.map((product) => (
             <div
               key={product.id}
               className="bg-white/90 backdrop-blur rounded-3xl shadow-xl border border-pink-100 overflow-hidden"
@@ -85,7 +99,7 @@ export default function ProductsListPage() {
 
                 {/* Categorias */}
                 <div className="flex flex-wrap gap-2">
-                  {product.categories?.map((pc: any) => (
+                  {product.categories?.map((pc) => (
                     <span
                       key={pc.category.id}
                       className="px-2 py-1 text-xs rounded-full bg-pink-50 text-pink-700 border border-pink-200"
@@ -122,7 +136,6 @@ export default function ProductsListPage() {
                   >
                     Editar
                   </Link>
-
                   <button
                     onClick={() => deleteProduct(product.id)}
                     className="text-sm text-red-600"
@@ -135,7 +148,9 @@ export default function ProductsListPage() {
           ))}
 
           {products.length === 0 && (
-            <p className="text-sm text-slate-500">Nenhum produto cadastrado ainda.</p>
+            <p className="text-sm text-slate-500">
+              Nenhum produto cadastrado ainda.
+            </p>
           )}
         </div>
       </div>

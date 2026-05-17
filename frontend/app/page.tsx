@@ -10,7 +10,7 @@ export default function HomePage() {
         </p>
 
         <a
-          href="/catalogo"
+          href="/catalog"
           className="inline-block mt-6 bg-pink-600 text-white px-6 py-3 rounded-xl shadow hover:bg-pink-700"
         >
           Ver Catálogo
